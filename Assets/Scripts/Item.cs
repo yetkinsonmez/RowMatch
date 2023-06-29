@@ -48,6 +48,16 @@ public class Item : MonoBehaviour
         get { return movableComponent; }
     }
 
+    private ColoredItem colorComponent;
+
+    public ColoredItem ColorComponent{
+        get { return colorComponent; }
+    }
+
+    void Awake() {
+        movableComponent = GetComponent<MoveItem>();
+        colorComponent = GetComponent<ColoredItem>();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -62,5 +72,9 @@ public class Item : MonoBehaviour
 
     public bool IsMovable(){
         return movableComponent != null;
+    }
+
+    public bool IsColored(){
+        return colorComponent != null;
     }
 }
