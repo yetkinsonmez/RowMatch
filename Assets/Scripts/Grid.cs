@@ -25,7 +25,7 @@ public class Grid : MonoBehaviour
     private Dictionary<PieceType, GameObject> piecePrefabDict;
     
 
-    private GameObject[,] pieces; // 2D array of objects
+    private Item[,] pieces; // 2D array of objects
 
     Vector2 Center(int x, int y){
         return new Vector2(transform.position.x - (float)xDimension/2f + x + 0.5f,
@@ -54,13 +54,16 @@ public class Grid : MonoBehaviour
             }
         }
 
-        pieces = new GameObject[xDimension, yDimension];
+        pieces = new Item[xDimension, yDimension];
 
         for (int x = 0; x < xDimension; x++){
             for (int y = 0; y < yDimension; y++){
-                pieces[x, y] = (GameObject)Instantiate(piecePrefabDict[PieceType.NORMAL], Center(x, y), Quaternion.identity);
-                pieces[x, y].name = "Piece(" + x + "," + y + ")"; 
-                pieces[x, y].transform.parent = transform;
+                GameObject newPiece = (GameObject)Instantiate(piecePrefabDict[PieceType.NORMAL], Center(x, y), Quaternion.identity);
+                newPiece.name = "Piece(" + x + "," + y + ")"; 
+                newPiece.transform.parent = transform;
+
+                pieces[x, y] = newPiece.GetComponent<Item>();
+                pieces[x, y].Init(x, y, this, PieceType.NORMAL);
             }
         }
 
