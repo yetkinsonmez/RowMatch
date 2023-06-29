@@ -27,7 +27,7 @@ public class Grid : MonoBehaviour
 
     private Item[,] pieces; // 2D array of objects
 
-    Vector2 Center(int x, int y){
+    public Vector2 Center(int x, int y){
         return new Vector2(transform.position.x - (float)xDimension/2f + x + 0.5f,
         transform.position.y + (float)yDimension/2f - y - 0.5f);
     }
@@ -64,6 +64,10 @@ public class Grid : MonoBehaviour
 
                 pieces[x, y] = newPiece.GetComponent<Item>();
                 pieces[x, y].Init(x, y, this, PieceType.NORMAL);
+
+                if (pieces[x, y].IsMovable()) {
+                    pieces[x, y].MovableComponent.Move(x, y);
+                }
             }
         }
 
