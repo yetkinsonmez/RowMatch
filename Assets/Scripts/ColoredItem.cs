@@ -5,7 +5,7 @@ using UnityEngine;
 public class ColoredItem : MonoBehaviour
 {
     public enum ColorType{
-        Yellow, Red, Green, Blue, Any, Count
+        Yellow, Red, Green, Blue, Any, CheckMark, Count
     };
 
     [System.Serializable]

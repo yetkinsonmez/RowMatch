@@ -7,6 +7,7 @@ public class Grid : MonoBehaviour
     public enum PieceType{
         NORMAL,
         EMPTY,
+        CHECK_MARK, // for the matched row
         COUNT,
     };
 
@@ -143,7 +144,7 @@ public class Grid : MonoBehaviour
                 pieces[x, 0] = newPiece.GetComponent<Item>();
                 pieces[x, 0].Init(x, -1, this, PieceType.NORMAL);
                 pieces[x, 0].MovableComponent.Move(x, 0, fillTime);
-                pieces[x, 0].ColorComponent.SetColor((ColoredItem.ColorType)Random.Range(0, pieces[x, 0].ColorComponent.NumColors));         
+                pieces[x, 0].ColorComponent.SetColor((ColoredItem.ColorType)Random.Range(0, pieces[x, 0].ColorComponent.NumColors - 1 ));  // exclude green check mark       
                 movedPiece = true;
             }
            
@@ -172,6 +173,8 @@ public class Grid : MonoBehaviour
 
             itemFirst.MovableComponent.Move(itemSecond.X, itemSecond.Y, fillTime);
             itemSecond.MovableComponent.Move(itemFirstX, itemFirstY, fillTime);
+
+            CheckCompleteRows();
         }
     }
 
@@ -188,4 +191,48 @@ public class Grid : MonoBehaviour
             SwapItems(firstItem, secondItem);
         }
     }
+
+    public void CheckCompleteRows()
+    {
+        for (int y = 0; y < yDimension; y++)
+        {
+            if (RowIsComplete(y))
+            {
+                UpdateRow(y);
+            }
+        }
+    }
+
+    private bool RowIsComplete(int row)
+    {
+        ColoredItem.ColorType firstColor = pieces[0, row].ColorComponent.Color;
+
+        for (int x = 1; x < xDimension; x++)
+        {
+            if (pieces[x, row].ColorComponent.Color != firstColor || pieces[x, row].Type == PieceType.EMPTY)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void UpdateRow(int row)
+    {
+        for (int x = 0; x < xDimension; x++)
+        {
+            // replace each item with a Green Check Mark
+            Destroy(pieces[x, row].gameObject);
+
+            GameObject newPiece = (GameObject)Instantiate(piecePrefabDict[PieceType.CHECK_MARK], Center(x, row), Quaternion.identity);
+            newPiece.transform.parent = transform;
+
+            pieces[x, row] = newPiece.GetComponent<Item>();
+            pieces[x, row].Init(x, row, this, PieceType.CHECK_MARK);
+            pieces[x, row].ColorComponent.SetColor(ColoredItem.ColorType.CheckMark); // set color to CheckMark
+
+        }
+    }
+
 }

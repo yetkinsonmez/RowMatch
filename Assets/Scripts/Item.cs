@@ -82,9 +82,11 @@ public class Item : MonoBehaviour
         
     }
 
-    public bool IsMovable(){
-        return movableComponent != null;
+    public bool IsMovable()
+    {
+        return movableComponent != null && type != Grid.PieceType.CHECK_MARK;
     }
+
 
     public bool IsColored(){
         return colorComponent != null;
