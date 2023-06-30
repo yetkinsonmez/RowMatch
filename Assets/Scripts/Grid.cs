@@ -79,6 +79,7 @@ public class Grid : MonoBehaviour
             }
         }
 
+        Fill();
  
     }
 
@@ -92,6 +93,56 @@ public class Grid : MonoBehaviour
         return pieces[x, y];
         
     }
+
+    public void Fill(){
+        while (FillStep())
+        {
+            
+        }
+    }
+
+    public bool FillStep(){
+        bool movedPiece = false;
+
+        for(int y = yDimension-2; y >= 0; y--) { // fill from the upper row
+            for(int x = 0; x < xDimension; x++) {
+                Item piece = pieces[x, y];
+
+                if (piece.IsMovable()){
+                    Item pieceBelow = pieces[x, y + 1];
+
+                    if (pieceBelow.Type == PieceType.EMPTY){
+                        piece.MovableComponent.Move(x, y + 1);
+                        pieces[x, y + 1] = piece;  
+                        EnterLevelWithEmptyItems(x , y, PieceType.EMPTY);
+                        movedPiece = true;
+                    }
+
+                }
+            
+            }
+        }
+
+        for(int x = 0; x < xDimension; x++) {    // for the first row
+            Item pieceBelow = pieces[x, 0];
+
+            if (pieceBelow.Type == PieceType.EMPTY){
+
+                GameObject newPiece = (GameObject)Instantiate(piecePrefabDict[PieceType.NORMAL], Center(x, -1), Quaternion.identity);
+                newPiece.transform.parent = transform;
+                
+                pieces[x, 0] = newPiece.GetComponent<Item>();
+                pieces[x, 0].Init(x, -1, this, PieceType.NORMAL);
+                pieces[x, 0].MovableComponent.Move(x, 0);
+                pieces[x, 0].ColorComponent.SetColor((ColoredItem.ColorType)Random.Range(0, pieces[x, 0].ColorComponent.NumColors));         
+                movedPiece = true;
+            }
+           
+        }
+
+        return movedPiece; 
+    }
+
     // Update is called once per frame
     void Update(){
 
