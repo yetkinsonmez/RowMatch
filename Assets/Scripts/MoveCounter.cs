@@ -30,7 +30,7 @@ public class MoveCounter : MonoBehaviour
 
     private void UpdateMoveCountDisplay()
     {
-        moveCountDisplay.text = "Moves Left: " + moveCount;
+        moveCountDisplay.text = "Move\n" + moveCount;
     }
 
     private void StageCompleted()
