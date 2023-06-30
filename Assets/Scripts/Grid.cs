@@ -6,6 +6,7 @@ public class Grid : MonoBehaviour
 {
     public enum PieceType{
         NORMAL,
+        EMPTY,
         COUNT,
     };
 
@@ -58,27 +59,39 @@ public class Grid : MonoBehaviour
 
         for (int x = 0; x < xDimension; x++){
             for (int y = 0; y < yDimension; y++){
-                GameObject newPiece = (GameObject)Instantiate(piecePrefabDict[PieceType.NORMAL], Center(x, y), Quaternion.identity);
-                newPiece.name = "Piece(" + x + "," + y + ")"; 
-                newPiece.transform.parent = transform;
+                
+                EnterLevelWithEmptyItems(x, y, PieceType.EMPTY);
 
-                pieces[x, y] = newPiece.GetComponent<Item>();
-                pieces[x, y].Init(x, y, this, PieceType.NORMAL);
+                // GameObject newPiece = (GameObject)Instantiate(piecePrefabDict[PieceType.NORMAL], Center(x, y), Quaternion.identity);
+                // newPiece.name = "Piece(" + x + "," + y + ")"; 
+                // newPiece.transform.parent = transform;
 
-                if (pieces[x, y].IsMovable()) {
-                    pieces[x, y].MovableComponent.Move(x, y);
-                }
+                // pieces[x, y] = newPiece.GetComponent<Item>();
+                // pieces[x, y].Init(x, y, this, PieceType.NORMAL);
 
-                if (pieces[x, y].IsColored()) {
-                    pieces[x, y].ColorComponent.SetColor((ColoredItem.ColorType)Random.Range(0, pieces[x, y].ColorComponent.NumColors));
-                }
+                // if (pieces[x, y].IsMovable()) {
+                //     pieces[x, y].MovableComponent.Move(x, y);
+                // }
+
+                // if (pieces[x, y].IsColored()) {
+                //     pieces[x, y].ColorComponent.SetColor((ColoredItem.ColorType)Random.Range(0, pieces[x, y].ColorComponent.NumColors));
+                // }
             }
         }
 
  
     }
 
+    public Item EnterLevelWithEmptyItems(int x, int y, PieceType type ){
+        GameObject obj = (GameObject)Instantiate(piecePrefabDict[type], Center(x, y), Quaternion.identity);
+        obj.transform.parent = transform;
 
+        pieces[x, y] = obj.GetComponent<Item>();
+        pieces[x, y].Init(x, y, this, type);
+
+        return pieces[x, y];
+        
+    }
     // Update is called once per frame
     void Update(){
 
