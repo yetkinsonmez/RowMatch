@@ -13,6 +13,8 @@ public class Grid : MonoBehaviour
     public int xDimension;
     public int yDimension;
 
+    public float fillTime;
+
     [System.Serializable]
     public struct PiecePrefab
     {
@@ -79,7 +81,7 @@ public class Grid : MonoBehaviour
             }
         }
 
-        Fill();
+        StartCoroutine(Fill());
  
     }
 
@@ -94,10 +96,10 @@ public class Grid : MonoBehaviour
         
     }
 
-    public void Fill(){
+    public IEnumerator Fill(){
         while (FillStep())
         {
-            
+            yield return new WaitForSeconds(fillTime);
         }
     }
 
@@ -112,6 +114,8 @@ public class Grid : MonoBehaviour
                     Item pieceBelow = pieces[x, y + 1];
 
                     if (pieceBelow.Type == PieceType.EMPTY){
+                        Destroy(pieceBelow.gameObject);
+
                         piece.MovableComponent.Move(x, y + 1);
                         pieces[x, y + 1] = piece;  
                         EnterLevelWithEmptyItems(x , y, PieceType.EMPTY);
@@ -127,7 +131,9 @@ public class Grid : MonoBehaviour
             Item pieceBelow = pieces[x, 0];
 
             if (pieceBelow.Type == PieceType.EMPTY){
-
+                
+                Destroy(pieceBelow.gameObject);
+                
                 GameObject newPiece = (GameObject)Instantiate(piecePrefabDict[PieceType.NORMAL], Center(x, -1), Quaternion.identity);
                 newPiece.transform.parent = transform;
                 
@@ -147,6 +153,4 @@ public class Grid : MonoBehaviour
     void Update(){
 
     }
-
-    
 }
