@@ -39,7 +39,7 @@ public class Grid : MonoBehaviour
         transform.position.y + (float)yDimension/2f - y - 0.5f);
     }
 
-
+    public MoveCounter moveCounter;
 
     // Start is called before the first frame update
     void Start()
@@ -175,6 +175,7 @@ public class Grid : MonoBehaviour
             itemSecond.MovableComponent.Move(itemFirstX, itemFirstY, fillTime);
 
             CheckCompleteRows();
+            moveCounter.DecreaseMoveCount();
         }
     }
 
