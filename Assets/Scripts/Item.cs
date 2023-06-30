@@ -38,20 +38,25 @@ public class Item : MonoBehaviour
         get { return grid; }
     }
 
+    public MoveCounter moveCounter;
+    
     public void Init(int _x, int _y, Grid _grid, Grid.PieceType _type){
         x = _x; y = _y; grid = _grid; type = _type;
     }
 
     void OnMouseEnter(){
-        grid.FirstItem(this);
+        if(!MoveCounter.isGameOver)
+            grid.FirstItem(this);
     }
 
     void OnMouseDown(){
-        grid.SecondItem(this);
+        if(!MoveCounter.isGameOver)
+            grid.SecondItem(this);
     }
 
     void OnMouseUp(){
-        grid.ReleaseItems();
+        if(!MoveCounter.isGameOver)
+            grid.ReleaseItems();
     }
 
     private MoveItem movableComponent;

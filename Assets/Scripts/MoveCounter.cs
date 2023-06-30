@@ -9,6 +9,8 @@ public class MoveCounter : MonoBehaviour
     public Text moveCountDisplay;
     public GameObject stageCompletedDisplay;
 
+    public static bool isGameOver = false;
+
     private void Start()
     {
         UpdateMoveCountDisplay();
@@ -33,6 +35,7 @@ public class MoveCounter : MonoBehaviour
 
     private void StageCompleted()
     {
+        isGameOver = true;
         moveCountDisplay.enabled = false;
         stageCompletedDisplay.SetActive(true);
     }
