@@ -40,6 +40,7 @@ public class Grid : MonoBehaviour
     }
 
     public MoveCounter moveCounter;
+    public ScoreManager scoreManager;
 
     // Start is called before the first frame update
     void Start()
@@ -222,7 +223,10 @@ public class Grid : MonoBehaviour
     private void UpdateRow(int row)
     {
         for (int x = 0; x < xDimension; x++)
-        {
+        {   
+            //get color of the matched row
+            ColoredItem.ColorType colorType = pieces[x, row].ColorComponent.Color;
+        
             // replace each item with a Green Check Mark
             Destroy(pieces[x, row].gameObject);
 
@@ -233,6 +237,7 @@ public class Grid : MonoBehaviour
             pieces[x, row].Init(x, row, this, PieceType.CHECK_MARK);
             pieces[x, row].ColorComponent.SetColor(ColoredItem.ColorType.CheckMark); // set color to CheckMark
 
+            scoreManager.AddScore(colorType);
         }
     }
 
