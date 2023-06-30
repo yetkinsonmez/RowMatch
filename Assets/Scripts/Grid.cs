@@ -200,7 +200,7 @@ public class Grid : MonoBehaviour
         {
             if (RowIsComplete(y))
             {
-                UpdateRow(y);
+                StartCoroutine(UpdateRow(y));
             }
         }
     }
@@ -220,13 +220,13 @@ public class Grid : MonoBehaviour
         return true;
     }
 
-    private void UpdateRow(int row)
+        private IEnumerator UpdateRow(int row)
     {
         for (int x = 0; x < xDimension; x++)
         {   
-            //get color of the matched row
+            // get color of the matched row
             ColoredItem.ColorType colorType = pieces[x, row].ColorComponent.Color;
-        
+            
             // replace each item with a Green Check Mark
             Destroy(pieces[x, row].gameObject);
 
@@ -238,7 +238,10 @@ public class Grid : MonoBehaviour
             pieces[x, row].ColorComponent.SetColor(ColoredItem.ColorType.CheckMark); // set color to CheckMark
 
             scoreManager.AddScore(colorType);
+
+            yield return new WaitForSeconds(0.05f);
         }
     }
+
 
 }

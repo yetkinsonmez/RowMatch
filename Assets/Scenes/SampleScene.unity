@@ -295,9 +295,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Score
-
-    10000'
+  m_Text: 
 --- !u!222 &157891227
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -850,6 +848,55 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &679474872
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 679474874}
+  - component: {fileID: 679474873}
+  m_Layer: 0
+  m_Name: Score
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &679474873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679474872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c42636e95de89e459e3a94ef570ec21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  redScore: 100
+  greenScore: 150
+  blueScore: 200
+  yellowScore: 250
+  scoreDisplay: {fileID: 157891226}
+--- !u!4 &679474874
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679474872}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.09301874, y: 0.21632081, z: -0.9554106}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &702311585
 GameObject:
   m_ObjectHideFlags: 0
@@ -1195,6 +1242,8 @@ MonoBehaviour:
   - type: 2
     prefab: {fileID: 2324182618815702935, guid: 4a226d5f85c91ff4ebee9716b630fa78, type: 3}
   moveCounter: {fileID: 1477010762}
+  scoreManager: {fileID: 679474873}
+  particlePrefab: {fileID: 5888899440244207912, guid: a9616cf80253e0f4ea0978e4612f7231, type: 3}
 --- !u!4 &1712759601
 Transform:
   m_ObjectHideFlags: 0
