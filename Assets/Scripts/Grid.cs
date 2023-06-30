@@ -30,6 +30,9 @@ public class Grid : MonoBehaviour
 
     private Item[,] pieces; // 2D array of objects
 
+    private Item firstItem;
+    private Item secondItem;
+
     public Vector2 Center(int x, int y){
         return new Vector2(transform.position.x - (float)xDimension/2f + x + 0.5f,
         transform.position.y + (float)yDimension/2f - y - 0.5f);
@@ -116,7 +119,7 @@ public class Grid : MonoBehaviour
                     if (pieceBelow.Type == PieceType.EMPTY){
                         Destroy(pieceBelow.gameObject);
 
-                        piece.MovableComponent.Move(x, y + 1);
+                        piece.MovableComponent.Move(x, y + 1, fillTime);
                         pieces[x, y + 1] = piece;  
                         EnterLevelWithEmptyItems(x , y, PieceType.EMPTY);
                         movedPiece = true;
@@ -133,13 +136,13 @@ public class Grid : MonoBehaviour
             if (pieceBelow.Type == PieceType.EMPTY){
                 
                 Destroy(pieceBelow.gameObject);
-                
+
                 GameObject newPiece = (GameObject)Instantiate(piecePrefabDict[PieceType.NORMAL], Center(x, -1), Quaternion.identity);
                 newPiece.transform.parent = transform;
                 
                 pieces[x, 0] = newPiece.GetComponent<Item>();
                 pieces[x, 0].Init(x, -1, this, PieceType.NORMAL);
-                pieces[x, 0].MovableComponent.Move(x, 0);
+                pieces[x, 0].MovableComponent.Move(x, 0, fillTime);
                 pieces[x, 0].ColorComponent.SetColor((ColoredItem.ColorType)Random.Range(0, pieces[x, 0].ColorComponent.NumColors));         
                 movedPiece = true;
             }
@@ -152,5 +155,37 @@ public class Grid : MonoBehaviour
     // Update is called once per frame
     void Update(){
 
+    }
+
+    public bool IsAdjacent(Item itemFirst, Item itemSecond){
+        return (itemFirst.X == itemSecond.X && (int)Mathf.Abs(itemFirst.Y - itemSecond.Y) == 1) 
+        || (itemFirst.Y == itemSecond.Y && (int)Mathf.Abs(itemFirst.X - itemSecond.X) == 1);
+    }
+
+    public void SwapItems(Item itemFirst, Item itemSecond){
+        if (itemFirst.IsMovable() && itemSecond.IsMovable()){
+            pieces[itemFirst.X, itemFirst.Y] = itemSecond;
+            pieces[itemSecond.X, itemSecond.Y] = itemFirst;
+
+            int itemFirstX = itemFirst.X;
+            int itemFirstY = itemFirst.Y;
+
+            itemFirst.MovableComponent.Move(itemSecond.X, itemSecond.Y, fillTime);
+            itemSecond.MovableComponent.Move(itemFirstX, itemFirstY, fillTime);
+        }
+    }
+
+    public void FirstItem(Item item){
+        firstItem = item;
+    }
+    
+    public void SecondItem(Item item){
+        secondItem = item;
+    }
+
+    public void ReleaseItems(){
+        if (IsAdjacent(firstItem, secondItem)){
+            SwapItems(firstItem, secondItem);
+        }
     }
 }

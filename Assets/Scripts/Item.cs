@@ -42,6 +42,18 @@ public class Item : MonoBehaviour
         x = _x; y = _y; grid = _grid; type = _type;
     }
 
+    void OnMouseEnter(){
+        grid.FirstItem(this);
+    }
+
+    void OnMouseDown(){
+        grid.SecondItem(this);
+    }
+
+    void OnMouseUp(){
+        grid.ReleaseItems();
+    }
+
     private MoveItem movableComponent;
 
     public MoveItem MovableComponent{
