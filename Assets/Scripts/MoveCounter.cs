@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MoveCounter : MonoBehaviour
 {
@@ -38,5 +39,13 @@ public class MoveCounter : MonoBehaviour
         isGameOver = true;
         moveCountDisplay.enabled = false;
         stageCompletedDisplay.SetActive(true);
+        StartCoroutine(ReturnToMainMenu());
     }
+
+    private IEnumerator ReturnToMainMenu()
+    {
+        yield return new WaitForSeconds(2); // wait for 2 seconds before loading main menu
+        SceneManager.LoadScene("MainMenu");
+    }
+
 }

@@ -1183,7 +1183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 636c7e605062e7c489e88b0a389947b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveCount: 20
+  moveCount: 8
   moveCountDisplay: {fileID: 451358991}
   stageCompletedDisplay: {fileID: 702311585}
 --- !u!4 &1477010763
@@ -1230,8 +1230,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcad1b36dfc816741a59e52bc60f7393, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xDimension: 5
-  yDimension: 7
+  xDimension: 4
+  yDimension: 4
   fillTime: 0.025
   backgroundPrefab: {fileID: 6485265199449933114, guid: 8cbe1cc6516807d4e8831fbdc4658006, type: 3}
   piecePrefabs:
