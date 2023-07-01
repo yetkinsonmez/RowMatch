@@ -239,7 +239,7 @@ public class Grid : MonoBehaviour
 
             scoreManager.AddScore(colorType);
 
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.0625f);
         }
     }
 
