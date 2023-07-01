@@ -8,7 +8,7 @@ public class LevelsPopup : MonoBehaviour
 {
     public GameObject LevelButtonPrefab;
     public Transform LevelsContainer;
-    private int levelCount = 2; //update this according to your total levels
+    private int levelCount = 10; //update this according to your total levels
 
     private void OnEnable()
     {
