@@ -24,7 +24,7 @@ public class MoveCounter : MonoBehaviour
         moveCount--;
         UpdateMoveCountDisplay();
 
-        if(moveCount <= 0 || !grid.CheckPossibleMatches())
+        if(moveCount <= 0 || !grid.CheckPossibleMatches(grid.xDimension))
         {
             StageCompleted();
         }

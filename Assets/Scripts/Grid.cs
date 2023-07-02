@@ -246,7 +246,7 @@ public class Grid : MonoBehaviour
         }
     }
 
-    public bool CheckPossibleMatches() {
+    public bool CheckPossibleMatches(int minMatchSize) {
         List<int> matchedRows = new List<int>();
         for (int y = 0; y < yDimension; y++) {
             if (RowIsComplete(y)) {
@@ -257,7 +257,7 @@ public class Grid : MonoBehaviour
 
         int lowerBoundary = 0;
         foreach (int upperBoundary in matchedRows) {
-            Dictionary<ColoredItem.ColorType, int> colorCount = new Dictionary<ColoredItem.ColorType, int>();
+            Dictionary<ColoredItem.ColorType, int> colorCount = new Dictionary<ColoredItem.ColorType, int>(); // to keep track of # of items with same color
             for (int y = lowerBoundary; y < upperBoundary; y++) {
                 for (int x = 0; x < xDimension; x++) {
                     ColoredItem.ColorType color = pieces[x, y].ColorComponent.Color;
@@ -269,11 +269,11 @@ public class Grid : MonoBehaviour
                 }
             }
 
-            if (!colorCount.Values.Any(count => count >= 4)) {
+            if (!colorCount.Values.Any(count => count >= minMatchSize)) {
                 return false;
             }
 
-            lowerBoundary = upperBoundary;
+            lowerBoundary = upperBoundary; // update lowerBoundary for next
         }
 
         return true;
