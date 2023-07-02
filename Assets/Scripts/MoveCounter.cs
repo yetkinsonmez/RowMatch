@@ -26,6 +26,7 @@ public class MoveCounter : MonoBehaviour
 
         if(moveCount <= 0 || !grid.CheckPossibleMatches(grid.xDimension))
         {
+            Debug.Log("xDimension (MoveCounter.cs): "+ grid.xDimension.ToString());
             StageCompleted();
         }
     }
@@ -41,6 +42,19 @@ public class MoveCounter : MonoBehaviour
         moveCountDisplay.enabled = false;
 
         stageCompletedDisplay.SetActive(true);
+        int currentLevel = GetCurrentLevel();
+        if(currentLevel >= PlayerPrefs.GetInt("levelReached", 1)) {
+            PlayerPrefs.SetInt("levelReached", currentLevel + 1);
+        }
+
+        // Save level progress after each stage completion
+        PlayerPrefs.Save();
+    }
+
+    private int GetCurrentLevel()
+    {
+        return int.Parse(SceneManager.GetActiveScene().name.Replace("Level", ""));
     }
 
 }
+

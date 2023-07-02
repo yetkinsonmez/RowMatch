@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ public class LevelsPopup : MonoBehaviour
 {
     public GameObject LevelButtonPrefab;
     public Transform LevelsContainer;
-    private int levelCount = 10; //update this according to your total levels
+    private int levelCount = 5; //update this according to your total levels
 
     private void OnEnable()
     {
@@ -23,14 +24,23 @@ public class LevelsPopup : MonoBehaviour
             Destroy(child.gameObject);
         }
 
+        // get the highest level reached
+        int levelReached = PlayerPrefs.GetInt("levelReached", 1);
+
         // Create button for each level
         for (int i = 1; i <= levelCount; i++)
         {
             GameObject levelButton = Instantiate(LevelButtonPrefab, LevelsContainer);
             levelButton.GetComponentInChildren<Text>().text = "Level " + i;
 
+            // disable the button if the level is not reached yet
+            Button button = levelButton.GetComponent<Button>();
+            if(i > levelReached) {
+                button.interactable = false;
+            }
+
             int levelIndex = i; // Important to capture in local variable for delegate
-            levelButton.GetComponent<Button>().onClick.AddListener(() => LoadLevel(levelIndex));
+            button.onClick.AddListener(() => LoadLevel(levelIndex));
         }
     }
 
