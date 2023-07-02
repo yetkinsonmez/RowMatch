@@ -10,7 +10,8 @@ public class LevelsPopup : MonoBehaviour
     public GameObject LevelButtonPrefab;
     public Transform LevelsContainer;
     private int levelCount = 5; //update this according to your total levels
-
+    public int[] initialLevelMoveCounts;
+    
     private void OnEnable()
     {
         PopulateLevels();
@@ -31,7 +32,20 @@ public class LevelsPopup : MonoBehaviour
         for (int i = 1; i <= levelCount; i++)
         {
             GameObject levelButton = Instantiate(LevelButtonPrefab, LevelsContainer);
-            levelButton.GetComponentInChildren<Text>().text = "Level " + i;
+            
+            // Here we fetch and display highest score and move count
+            string levelStats = PlayerPrefs.GetString("LevelStats" + i, "0,0"); // Format is "HighestScore,MoveCount"
+            
+            string[] stats = levelStats.Split(',');
+
+            Text levelText = levelButton.transform.Find("LevelNo").GetComponent<Text>();
+            Text statsText = levelButton.transform.Find("LevelDetail").GetComponent<Text>();
+
+            levelText.text = "Level " + i;
+
+            int initialLevelMoveCount = initialLevelMoveCounts[i-1];
+            statsText.text = "Highest Score: " + stats[0] + " | Moves: " + initialLevelMoveCount;
+
 
             // disable the button if the level is not reached yet
             Button button = levelButton.GetComponent<Button>();

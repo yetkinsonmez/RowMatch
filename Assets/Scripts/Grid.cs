@@ -246,37 +246,37 @@ public class Grid : MonoBehaviour
         }
     }
 
-    public bool CheckPossibleMatches(int minMatchSize) {
-        List<int> matchedRows = new List<int>();
-        for (int y = 0; y < yDimension; y++) {
-            if (RowIsComplete(y)) {
-                matchedRows.Add(y);
-            }
-        }
-        matchedRows.Add(yDimension);  // add upper boundary
+    // public bool CheckPossibleMatches(int minMatchSize) {
+    //     List<int> matchedRows = new List<int>();
+    //     for (int y = 0; y < yDimension; y++) {
+    //         if (RowIsComplete(y)) {
+    //             matchedRows.Add(y);
+    //         }
+    //     }
+    //     matchedRows.Add(yDimension);  // add upper boundary
 
-        int lowerBoundary = 0;
-        foreach (int upperBoundary in matchedRows) {
-            Dictionary<ColoredItem.ColorType, int> colorCount = new Dictionary<ColoredItem.ColorType, int>(); // to keep track of # of items with same color
-            for (int y = lowerBoundary; y < upperBoundary; y++) {
-                for (int x = 0; x < xDimension; x++) {
-                    ColoredItem.ColorType color = pieces[x, y].ColorComponent.Color;
-                    if (colorCount.ContainsKey(color)) {
-                        colorCount[color]++;
-                    } else {
-                        colorCount[color] = 1;
-                    }
-                }
-            }
+    //     int lowerBoundary = 0;
+    //     foreach (int upperBoundary in matchedRows) {
+    //         Dictionary<ColoredItem.ColorType, int> colorCount = new Dictionary<ColoredItem.ColorType, int>(); // to keep track of # of items with same color
+    //         for (int y = lowerBoundary; y < upperBoundary; y++) {
+    //             for (int x = 0; x < xDimension; x++) {
+    //                 ColoredItem.ColorType color = pieces[x, y].ColorComponent.Color;
+    //                 if (colorCount.ContainsKey(color)) {
+    //                     colorCount[color]++;
+    //                 } else {
+    //                     colorCount[color] = 1;
+    //                 }
+    //             }
+    //         }
 
-            if (!colorCount.Values.Any(count => count >= minMatchSize)) {
-                return false;
-            }
+    //         if (!colorCount.Values.Any(count => count >= minMatchSize)) {
+    //             return false;
+    //         }
 
-            lowerBoundary = upperBoundary; // update lowerBoundary for next
-        }
+    //         lowerBoundary = upperBoundary; // update lowerBoundary for next
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
 }

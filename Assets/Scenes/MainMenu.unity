@@ -1884,6 +1884,30 @@ PrefabInstance:
       propertyPath: LevelButtonPrefab
       value: 
       objectReference: {fileID: 5447075775431755602, guid: 81eadba4cd990fe44bd6092f0290d9f0, type: 3}
+    - target: {fileID: 8097357796575397415, guid: 366ec462e0770f240895e3f2017b53e4, type: 3}
+      propertyPath: initialLevelMoveCounts.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097357796575397415, guid: 366ec462e0770f240895e3f2017b53e4, type: 3}
+      propertyPath: initialLevelMoveCounts.Array.data[0]
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097357796575397415, guid: 366ec462e0770f240895e3f2017b53e4, type: 3}
+      propertyPath: initialLevelMoveCounts.Array.data[1]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097357796575397415, guid: 366ec462e0770f240895e3f2017b53e4, type: 3}
+      propertyPath: initialLevelMoveCounts.Array.data[2]
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097357796575397415, guid: 366ec462e0770f240895e3f2017b53e4, type: 3}
+      propertyPath: initialLevelMoveCounts.Array.data[3]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097357796575397415, guid: 366ec462e0770f240895e3f2017b53e4, type: 3}
+      propertyPath: initialLevelMoveCounts.Array.data[4]
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 8097357796731923685, guid: 366ec462e0770f240895e3f2017b53e4, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5

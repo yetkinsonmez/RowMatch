@@ -31,18 +31,30 @@ public class EndGameController : MonoBehaviour
 
     private void RestartGame()
     {
-        // load the same level
+        int highScore = PlayerPrefs.GetInt("Level" + currentLevel + "HighScore", 0);
+        if (scoreManager.GetScore() > highScore)
+        {
+            PlayerPrefs.SetInt("Level" + currentLevel + "HighScore", scoreManager.GetScore());
+        }
+
+        SceneManager.LoadScene("Level" + currentLevel);
+    }
+
+    // Update the GoToNextLevel() method
+    private void GoToNextLevel()
+    {
+        int highScore = PlayerPrefs.GetInt("Level" + currentLevel + "HighScore", 0);
+        if (scoreManager.GetScore() > highScore)
+        {
+            PlayerPrefs.SetInt("Level" + currentLevel + "HighScore", scoreManager.GetScore());
+        }
+
+        currentLevel++;
         SceneManager.LoadScene("Level" + currentLevel);
     }
 
     private void GoToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
-    }
-
-    private void GoToNextLevel()
-    {
-        currentLevel++;
-        SceneManager.LoadScene("Level" + currentLevel);
     }
 }
