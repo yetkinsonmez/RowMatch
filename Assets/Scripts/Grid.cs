@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq; // for Enum.Any()
+
 
 public class Grid : MonoBehaviour
 {
@@ -243,4 +245,38 @@ public class Grid : MonoBehaviour
             yield return new WaitForSeconds(0.0625f);
         }
     }
+
+    public bool CheckPossibleMatches() {
+        List<int> matchedRows = new List<int>();
+        for (int y = 0; y < yDimension; y++) {
+            if (RowIsComplete(y)) {
+                matchedRows.Add(y);
+            }
+        }
+        matchedRows.Add(yDimension);  // add upper boundary
+
+        int lowerBoundary = 0;
+        foreach (int upperBoundary in matchedRows) {
+            Dictionary<ColoredItem.ColorType, int> colorCount = new Dictionary<ColoredItem.ColorType, int>();
+            for (int y = lowerBoundary; y < upperBoundary; y++) {
+                for (int x = 0; x < xDimension; x++) {
+                    ColoredItem.ColorType color = pieces[x, y].ColorComponent.Color;
+                    if (colorCount.ContainsKey(color)) {
+                        colorCount[color]++;
+                    } else {
+                        colorCount[color] = 1;
+                    }
+                }
+            }
+
+            if (!colorCount.Values.Any(count => count >= 4)) {
+                return false;
+            }
+
+            lowerBoundary = upperBoundary;
+        }
+
+        return true;
+    }
+
 }

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class MoveCounter : MonoBehaviour
 {
+    public Grid grid;
     public int moveCount = 20;
     public Text moveCountDisplay;
     public GameObject stageCompletedDisplay;
@@ -23,7 +24,7 @@ public class MoveCounter : MonoBehaviour
         moveCount--;
         UpdateMoveCountDisplay();
 
-        if(moveCount <= 0)
+        if(moveCount <= 0 || !grid.CheckPossibleMatches())
         {
             StageCompleted();
         }
