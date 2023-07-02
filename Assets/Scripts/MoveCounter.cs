@@ -38,14 +38,8 @@ public class MoveCounter : MonoBehaviour
     {
         isGameOver = true;
         moveCountDisplay.enabled = false;
-        stageCompletedDisplay.SetActive(true);
-        StartCoroutine(ReturnToMainMenu());
-    }
 
-    private IEnumerator ReturnToMainMenu()
-    {
-        yield return new WaitForSeconds(2); // wait for 2 seconds before loading main menu
-        SceneManager.LoadScene("MainMenu");
+        stageCompletedDisplay.SetActive(true);
     }
 
 }

@@ -46,4 +46,9 @@ public class ScoreManager : MonoBehaviour
     {
         scoreDisplay.text = "Score\n" + currentScore;
     }
+
+    public int GetScore()
+    {
+        return currentScore;
+    }
 }

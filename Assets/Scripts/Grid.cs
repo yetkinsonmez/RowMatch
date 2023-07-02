@@ -45,6 +45,7 @@ public class Grid : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        MoveCounter.isGameOver = false;
         piecePrefabDict = new Dictionary<PieceType, GameObject>(); 
 
         for (int i = 0; i < piecePrefabs.Length; i++)
@@ -242,6 +243,4 @@ public class Grid : MonoBehaviour
             yield return new WaitForSeconds(0.0625f);
         }
     }
-
-
 }
