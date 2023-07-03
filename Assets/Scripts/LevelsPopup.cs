@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class LevelsPopup : MonoBehaviour
 {
@@ -11,11 +12,35 @@ public class LevelsPopup : MonoBehaviour
     public Transform LevelsContainer;
     private int levelCount = 5; //update this according to your total levels
     public int[] initialLevelMoveCounts;
-    
+    public Button cancelButton; 
+
+
+
+    private void Awake()
+    {
+        cancelButton.onClick.AddListener(Cancel);
+    }
+
     private void OnEnable()
     {
+        // populate the levels
         PopulateLevels();
+
+        // slide-in animation for the panel
+        transform.localPosition = new Vector3(0, -Screen.height, 0);
+        transform.DOLocalMoveY(-20, 1.2f).SetEase(Ease.OutCubic);
+
+        // sequential appearance for the level buttons
+        foreach (Transform child in LevelsContainer)
+        {
+            child.localScale = Vector3.zero; // make each button invisible
+            Sequence mySequence = DOTween.Sequence();
+            mySequence.AppendInterval(0.1f * child.GetSiblingIndex()); // delay based on button order
+            mySequence.Append(child.DOScale(0.85f, 0.7f)); // make each button appear gradually
+            mySequence.Play();
+        }
     }
+
 
     private void PopulateLevels()
     {
@@ -33,6 +58,8 @@ public class LevelsPopup : MonoBehaviour
         {
             GameObject levelButton = Instantiate(LevelButtonPrefab, LevelsContainer);
             
+            // levelButton.transform.localScale = new Vector3(0.8f, 0.7f, 1f);
+
             // Here we fetch and display highest score and move count
             string levelStats = PlayerPrefs.GetString("LevelStats" + i, "0,0"); // Format is "HighestScore,MoveCount"
             
@@ -61,5 +88,11 @@ public class LevelsPopup : MonoBehaviour
     private void LoadLevel(int levelIndex)
     {
         SceneManager.LoadScene("Level" + levelIndex);
+    }
+
+    private void Cancel() // add this Cancel function
+    {
+        // slide-out animation for the panel and then deactivates it
+        transform.DOLocalMoveY(-Screen.height, 0.5f).SetEase(Ease.InCubic).OnComplete(() => gameObject.SetActive(false));
     }
 }
