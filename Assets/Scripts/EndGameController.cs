@@ -11,6 +11,7 @@ public class EndGameController : MonoBehaviour
     public Button playAgainButton;
     public Button homeButton;
     public Button nextLevelButton;
+    public ParticleSystem fireworkParticles;
 
     private ScoreManager scoreManager;
     private int currentLevel = 1; // set this based on your current level
@@ -36,8 +37,10 @@ public class EndGameController : MonoBehaviour
         mySequence.Append(transform.DOScale(1.2f, 0.3f)); 
         mySequence.Append(transform.DOScale(0.8f, 0.2f)); 
         mySequence.Append(transform.DOScale(1, 0.2f));
-
-        mySequence.Play(); 
+        
+        mySequence.Play();
+        fireworkParticles.Play();
+         
     }
 
     private void RestartGame()
