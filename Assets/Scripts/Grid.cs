@@ -68,8 +68,6 @@ public class Grid : MonoBehaviour
         for (int x = 0; x < xDimension; x++){
             for (int y = 0; y < yDimension; y++){
                 
-                // EnterLevelWithEmptyItems(x, y, PieceType.EMPTY);
-
                 GameObject newPiece = (GameObject)Instantiate(piecePrefabDict[PieceType.NORMAL], Center(x, y), Quaternion.identity);
                 newPiece.name = "Piece(" + x + "," + y + ")"; 
                 newPiece.transform.parent = transform;
