@@ -71,7 +71,7 @@ public class MoveCounter : MonoBehaviour
         // Save level progress after each stage completion
         PlayerPrefs.Save();
 
-        StartCoroutine(ShowStageCompletedDisplayAfterDelay(1.0f));        
+        StartCoroutine(ShowStageCompletedDisplayAfterDelay(0.5f));        
     }
 
     private IEnumerator ShowStageCompletedDisplayAfterDelay(float delay)

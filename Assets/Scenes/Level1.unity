@@ -148,7 +148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2019344}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.2, y: 3.437, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 15.8384, y: 18.373323, z: 7.6005836}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1216,7 +1216,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 823488001}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.9767938, y: -0.0637773, z: 4.7233524}
+  m_LocalPosition: {x: 0, y: 0, z: 4.7233524}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1716,7 +1716,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 1712759600}
-  moveCount: 15
+  moveCount: 5
   moveCountDisplay: {fileID: 451358991}
   stageCompletedDisplay: {fileID: 823488001}
 --- !u!4 &1477010763
@@ -2097,8 +2097,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1.0607, y: -0.1989}
-  m_SizeDelta: {x: 165.2147, y: 190.1709}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 151.9184, y: 188.6367}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2075033435
 MonoBehaviour:
