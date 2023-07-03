@@ -8,9 +8,7 @@ public class Grid : MonoBehaviour
 {
     public enum PieceType{
         NORMAL,
-        EMPTY,
         CHECK_MARK, // for the matched row
-        COUNT,
     };
 
     public int xDimension;
@@ -70,91 +68,25 @@ public class Grid : MonoBehaviour
         for (int x = 0; x < xDimension; x++){
             for (int y = 0; y < yDimension; y++){
                 
-                EnterLevelWithEmptyItems(x, y, PieceType.EMPTY);
+                // EnterLevelWithEmptyItems(x, y, PieceType.EMPTY);
 
-                // GameObject newPiece = (GameObject)Instantiate(piecePrefabDict[PieceType.NORMAL], Center(x, y), Quaternion.identity);
-                // newPiece.name = "Piece(" + x + "," + y + ")"; 
-                // newPiece.transform.parent = transform;
-
-                // pieces[x, y] = newPiece.GetComponent<Item>();
-                // pieces[x, y].Init(x, y, this, PieceType.NORMAL);
-
-                // if (pieces[x, y].IsMovable()) {
-                //     pieces[x, y].MovableComponent.Move(x, y);
-                // }
-
-                // if (pieces[x, y].IsColored()) {
-                //     pieces[x, y].ColorComponent.SetColor((ColoredItem.ColorType)Random.Range(0, pieces[x, y].ColorComponent.NumColors));
-                // }
-            }
-        }
-
-        StartCoroutine(Fill());
- 
-    }
-
-    public Item EnterLevelWithEmptyItems(int x, int y, PieceType type ){
-        GameObject obj = (GameObject)Instantiate(piecePrefabDict[type], Center(x, y), Quaternion.identity);
-        obj.transform.parent = transform;
-
-        pieces[x, y] = obj.GetComponent<Item>();
-        pieces[x, y].Init(x, y, this, type);
-
-        return pieces[x, y];
-        
-    }
-
-    public IEnumerator Fill(){
-        while (FillStep())
-        {
-            yield return new WaitForSeconds(fillTime);
-        }
-    }
-
-    public bool FillStep(){
-        bool movedPiece = false;
-
-        for(int y = yDimension-2; y >= 0; y--) { // fill from the upper row
-            for(int x = 0; x < xDimension; x++) {
-                Item piece = pieces[x, y];
-
-                if (piece.IsMovable()){
-                    Item pieceBelow = pieces[x, y + 1];
-
-                    if (pieceBelow.Type == PieceType.EMPTY){
-                        Destroy(pieceBelow.gameObject);
-
-                        piece.MovableComponent.Move(x, y + 1, fillTime);
-                        pieces[x, y + 1] = piece;  
-                        EnterLevelWithEmptyItems(x , y, PieceType.EMPTY);
-                        movedPiece = true;
-                    }
-
-                }
-            
-            }
-        }
-
-        for(int x = 0; x < xDimension; x++) {    // for the first row
-            Item pieceBelow = pieces[x, 0];
-
-            if (pieceBelow.Type == PieceType.EMPTY){
-                
-                Destroy(pieceBelow.gameObject);
-
-                GameObject newPiece = (GameObject)Instantiate(piecePrefabDict[PieceType.NORMAL], Center(x, -1), Quaternion.identity);
+                GameObject newPiece = (GameObject)Instantiate(piecePrefabDict[PieceType.NORMAL], Center(x, y), Quaternion.identity);
+                newPiece.name = "Piece(" + x + "," + y + ")"; 
                 newPiece.transform.parent = transform;
-                
-                pieces[x, 0] = newPiece.GetComponent<Item>();
-                pieces[x, 0].Init(x, -1, this, PieceType.NORMAL);
-                pieces[x, 0].MovableComponent.Move(x, 0, fillTime);
-                pieces[x, 0].ColorComponent.SetColor((ColoredItem.ColorType)Random.Range(0, pieces[x, 0].ColorComponent.NumColors - 1 ));  // exclude green check mark       
-                movedPiece = true;
+
+                pieces[x, y] = newPiece.GetComponent<Item>();
+                pieces[x, y].Init(x, y, this, PieceType.NORMAL);
+
+                if (pieces[x, y].IsMovable()) {
+                    pieces[x, y].MovableComponent.Move(x, y);
+                }
+
+                if (pieces[x, y].IsColored()) {
+                    pieces[x, y].ColorComponent.SetColor((ColoredItem.ColorType)Random.Range(0, pieces[x, y].ColorComponent.NumColors - 1));
+                }
             }
-           
         }
 
-        return movedPiece; 
     }
 
     // Update is called once per frame
@@ -175,8 +107,8 @@ public class Grid : MonoBehaviour
             int itemFirstX = itemFirst.X;
             int itemFirstY = itemFirst.Y;
 
-            itemFirst.MovableComponent.Move(itemSecond.X, itemSecond.Y, fillTime);
-            itemSecond.MovableComponent.Move(itemFirstX, itemFirstY, fillTime);
+            itemFirst.MovableComponent.Move(itemSecond.X, itemSecond.Y);
+            itemSecond.MovableComponent.Move(itemFirstX, itemFirstY);
 
             CheckCompleteRows();
             moveCounter.DecreaseMoveCount();
@@ -214,7 +146,7 @@ public class Grid : MonoBehaviour
 
         for (int x = 1; x < xDimension; x++)
         {
-            if (pieces[x, row].ColorComponent.Color != firstColor || pieces[x, row].Type == PieceType.EMPTY)
+            if (pieces[x, row].ColorComponent.Color != firstColor)
             {
                 return false;
             }
@@ -245,38 +177,5 @@ public class Grid : MonoBehaviour
             yield return new WaitForSeconds(0.0625f);
         }
     }
-
-    // public bool CheckPossibleMatches(int minMatchSize) {
-    //     List<int> matchedRows = new List<int>();
-    //     for (int y = 0; y < yDimension; y++) {
-    //         if (RowIsComplete(y)) {
-    //             matchedRows.Add(y);
-    //         }
-    //     }
-    //     matchedRows.Add(yDimension);  // add upper boundary
-
-    //     int lowerBoundary = 0;
-    //     foreach (int upperBoundary in matchedRows) {
-    //         Dictionary<ColoredItem.ColorType, int> colorCount = new Dictionary<ColoredItem.ColorType, int>(); // to keep track of # of items with same color
-    //         for (int y = lowerBoundary; y < upperBoundary; y++) {
-    //             for (int x = 0; x < xDimension; x++) {
-    //                 ColoredItem.ColorType color = pieces[x, y].ColorComponent.Color;
-    //                 if (colorCount.ContainsKey(color)) {
-    //                     colorCount[color]++;
-    //                 } else {
-    //                     colorCount[color] = 1;
-    //                 }
-    //             }
-    //         }
-
-    //         if (!colorCount.Values.Any(count => count >= minMatchSize)) {
-    //             return false;
-    //         }
-
-    //         lowerBoundary = upperBoundary; // update lowerBoundary for next
-    //     }
-
-    //     return true;
-    // }
 
 }

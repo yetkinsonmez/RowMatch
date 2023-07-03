@@ -23,7 +23,7 @@ public class MoveItem : MonoBehaviour
         
     }
 
-    public void Move(int xNew, int yNew, float time){
+    public void Move(int xNew, int yNew){
         item.X = xNew;
         item.Y = yNew;
 

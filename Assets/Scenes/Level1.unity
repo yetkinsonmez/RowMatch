@@ -1771,8 +1771,6 @@ MonoBehaviour:
   - type: 0
     prefab: {fileID: 2324182618815702935, guid: 4a226d5f85c91ff4ebee9716b630fa78, type: 3}
   - type: 1
-    prefab: {fileID: 6969634108700032637, guid: 2948254b364b1344ea0d89c25e39b306, type: 3}
-  - type: 2
     prefab: {fileID: 2324182618815702935, guid: 4a226d5f85c91ff4ebee9716b630fa78, type: 3}
   moveCounter: {fileID: 1477010762}
   scoreManager: {fileID: 679474873}
