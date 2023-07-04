@@ -10,7 +10,7 @@ public class LevelsPopup : MonoBehaviour
 {
     public GameObject LevelButtonPrefab;
     public Transform LevelsContainer;
-    private int levelCount = 5; //update this according to your total levels
+    private int levelCount = 3; //update this according to your total levels
     public int[] initialLevelMoveCounts;
     public Button cancelButton; 
 
@@ -36,7 +36,7 @@ public class LevelsPopup : MonoBehaviour
             child.localScale = Vector3.zero; // make each button invisible
             Sequence mySequence = DOTween.Sequence();
             mySequence.AppendInterval(0.1f * child.GetSiblingIndex()); // delay based on button order
-            mySequence.Append(child.DOScale(0.85f, 0.7f)); // make each button appear gradually
+            mySequence.Append(child.DOScale(1f, 0.7f)); // make each button appear gradually
             mySequence.Play();
         }
     }
@@ -87,8 +87,14 @@ public class LevelsPopup : MonoBehaviour
 
     private void LoadLevel(int levelIndex)
     {
-        SceneManager.LoadScene("Level" + levelIndex);
+        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
+        MainMenu.LevelData levelData = mainMenu.levelDataDict["https://row-match.s3.amazonaws.com/levels/RM_A" + levelIndex];
+        PlayerPrefs.SetInt("GridWidth", levelData.GridWidth);
+        PlayerPrefs.SetInt("GridHeight", levelData.GridHeight);
+        PlayerPrefs.SetInt("MoveCount", levelData.MoveCount);
+        SceneManager.LoadScene("Game");
     }
+
 
     private void Cancel() // add this Cancel function
     {

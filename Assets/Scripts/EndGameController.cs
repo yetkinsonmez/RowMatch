@@ -20,9 +20,9 @@ public class EndGameController : MonoBehaviour
     {
         scoreManager = GameObject.FindObjectOfType<ScoreManager>();
 
-        playAgainButton.onClick.AddListener(() => RestartGame());
+        // playAgainButton.onClick.AddListener(() => RestartGame());
         homeButton.onClick.AddListener(() => GoToMainMenu());
-        nextLevelButton.onClick.AddListener(() => GoToNextLevel());
+        // nextLevelButton.onClick.AddListener(() => GoToNextLevel());
     }
 
     private void OnEnable()
@@ -42,29 +42,29 @@ public class EndGameController : MonoBehaviour
         mySequence.Play();         
     }
 
-    private void RestartGame()
-    {
-        int highScore = PlayerPrefs.GetInt("Level" + currentLevel + "HighScore", 0);
-        if (scoreManager.GetScore() > highScore)
-        {
-            PlayerPrefs.SetInt("Level" + currentLevel + "HighScore", scoreManager.GetScore());
-        }
+    // private void RestartGame()
+    // {
+    //     int highScore = PlayerPrefs.GetInt("Level" + currentLevel + "HighScore", 0);
+    //     if (scoreManager.GetScore() > highScore)
+    //     {
+    //         PlayerPrefs.SetInt("Level" + currentLevel + "HighScore", scoreManager.GetScore());
+    //     }
 
-        SceneManager.LoadScene("Level" + currentLevel);
-    }
+    //     SceneManager.LoadScene("Level" + currentLevel);
+    // }
 
-    // Update the GoToNextLevel() method
-    private void GoToNextLevel()
-    {
-        int highScore = PlayerPrefs.GetInt("Level" + currentLevel + "HighScore", 0);
-        if (scoreManager.GetScore() > highScore)
-        {
-            PlayerPrefs.SetInt("Level" + currentLevel + "HighScore", scoreManager.GetScore());
-        }
+    // // Update the GoToNextLevel() method
+    // private void GoToNextLevel()
+    // {
+    //     int highScore = PlayerPrefs.GetInt("Level" + currentLevel + "HighScore", 0);
+    //     if (scoreManager.GetScore() > highScore)
+    //     {
+    //         PlayerPrefs.SetInt("Level" + currentLevel + "HighScore", scoreManager.GetScore());
+    //     }
 
-        currentLevel++;
-        SceneManager.LoadScene("Level" + currentLevel);
-    }
+    //     currentLevel++;
+    //     SceneManager.LoadScene("Level" + currentLevel);
+    // }
 
     private void GoToMainMenu()
     {

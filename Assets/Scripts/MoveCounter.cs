@@ -17,12 +17,12 @@ public class MoveCounter : MonoBehaviour
 
     private void Start()
     {
+        moveCount = PlayerPrefs.GetInt("MoveCount", 10);
         UpdateMoveCountDisplay();
         Debug.Log("Move : " + moveCount.ToString());
 
         stageCompletedDisplay.SetActive(false);
         scoreManager = GameObject.FindObjectOfType<ScoreManager>();
-
     }
 
     public void DecreaseMoveCount()
@@ -47,28 +47,6 @@ public class MoveCounter : MonoBehaviour
     {
         isGameOver = true;
 
-        int currentLevel = GetCurrentLevel();
-        if(currentLevel >= PlayerPrefs.GetInt("levelReached", 1)) {
-            PlayerPrefs.SetInt("levelReached", currentLevel + 1);
-        }
-
-        // Here we save the highest score and move count
-        int currentScore = scoreManager.GetScore();
-        string currentLevelStats = PlayerPrefs.GetString("LevelStats" + currentLevel, "0,0");
-        string[] stats = currentLevelStats.Split(',');
-        int highestScore = int.Parse(stats[0]);
-
-        if (currentScore > highestScore)
-        {
-            highestScore = currentScore; // Update highest score if the current score is higher
-        }
-
-        // The format is "HighestScore,MoveCount"
-        string newLevelStats = highestScore + "," + moveCount;
-        PlayerPrefs.SetString("LevelStats" + currentLevel, newLevelStats);
-
-        // Save level progress after each stage completion
-        PlayerPrefs.Save();
 
         StartCoroutine(ShowStageCompletedDisplayAfterDelay(0.5f));        
     }
@@ -80,10 +58,6 @@ public class MoveCounter : MonoBehaviour
         stageCompletedDisplay.SetActive(true);
     }
 
-    private int GetCurrentLevel()
-    {
-        return int.Parse(SceneManager.GetActiveScene().name.Replace("Level", ""));
-    }
 
 }
 

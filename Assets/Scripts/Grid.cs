@@ -57,7 +57,12 @@ public class Grid : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        
+        xDimension = PlayerPrefs.GetInt("GridWidth", 8);
+        yDimension = PlayerPrefs.GetInt("GridHeight", 8);
         MoveCounter.isGameOver = false;
+        
         piecePrefabDict = new Dictionary<PieceType, GameObject>(); 
 
         for (int i = 0; i < piecePrefabs.Length; i++)
