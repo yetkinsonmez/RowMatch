@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Linq; // for Enum.Any()
+using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 
 public class Grid : MonoBehaviour
@@ -34,13 +37,22 @@ public class Grid : MonoBehaviour
     private Item firstItem;
     private Item secondItem;
 
+
+    public MoveCounter moveCounter;
+    public ScoreManager scoreManager;
+
+    public Button cancelButton; 
+
+    private void Awake()
+    {
+        cancelButton.onClick.AddListener(GoToMainMenu);
+    }
+
     public Vector2 Center(int x, int y){
         return new Vector2(transform.position.x - (float)xDimension/2f + x + 0.5f,
         transform.position.y + (float)yDimension/2f - y - 0.5f);
     }
 
-    public MoveCounter moveCounter;
-    public ScoreManager scoreManager;
 
     // Start is called before the first frame update
     void Start()
@@ -153,7 +165,7 @@ public class Grid : MonoBehaviour
         return true;
     }
 
-        private IEnumerator UpdateRow(int row)
+    private IEnumerator UpdateRow(int row)
     {
         for (int x = 0; x < xDimension; x++)
         {   
@@ -170,10 +182,18 @@ public class Grid : MonoBehaviour
             pieces[x, row].Init(x, row, this, PieceType.CHECK_MARK);
             pieces[x, row].ColorComponent.SetColor(ColoredItem.ColorType.CheckMark); // set color to CheckMark
 
+            newPiece.transform.DOScale(1.2f, 0.5f).SetLoops(2, LoopType.Yoyo);
+
             scoreManager.AddScore(colorType);
 
             yield return new WaitForSeconds(0.0625f);
         }
+    }
+
+
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
 }

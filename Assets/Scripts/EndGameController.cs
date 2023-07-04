@@ -29,18 +29,17 @@ public class EndGameController : MonoBehaviour
     {
         // populate score text with the final score
         totalScoreText.text = "Score: " + scoreManager.GetScore();
+        fireworkParticles.Play();
 
         Sequence mySequence = DOTween.Sequence();
 
-        mySequence.Append(transform.DOScale(1.3f, 0.4f)); 
-        mySequence.Append(transform.DOScale(0.6f, 0.3f));
-        mySequence.Append(transform.DOScale(1.2f, 0.3f)); 
-        mySequence.Append(transform.DOScale(0.8f, 0.2f)); 
-        mySequence.Append(transform.DOScale(1, 0.2f));
+        mySequence.Append(transform.DOScale(1.3f, 0.6f)); 
+        mySequence.Append(transform.DOScale(0.6f, 0.5f));
+        mySequence.Append(transform.DOScale(1.2f, 0.4f)); 
+        mySequence.Append(transform.DOScale(0.8f, 0.3f)); 
+        mySequence.Append(transform.DOScale(1, 0.3f));
         
-        mySequence.Play();
-        fireworkParticles.Play();
-         
+        mySequence.Play();         
     }
 
     private void RestartGame()

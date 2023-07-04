@@ -92,7 +92,6 @@ public class LevelsPopup : MonoBehaviour
 
     private void Cancel() // add this Cancel function
     {
-        // slide-out animation for the panel and then deactivates it
         transform.DOLocalMoveY(-Screen.height, 0.5f).SetEase(Ease.InCubic).OnComplete(() => gameObject.SetActive(false));
     }
 }

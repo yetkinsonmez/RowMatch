@@ -46,7 +46,6 @@ public class MoveCounter : MonoBehaviour
     private void StageCompleted()
     {
         isGameOver = true;
-        moveCountDisplay.enabled = false;
 
         int currentLevel = GetCurrentLevel();
         if(currentLevel >= PlayerPrefs.GetInt("levelReached", 1)) {
