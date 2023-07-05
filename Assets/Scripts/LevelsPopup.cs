@@ -84,7 +84,11 @@ public class LevelsPopup : MonoBehaviour
                 movesText.text = "Moves: " + mainMenu.offlineLevels[i - 1].MoveCount;
             }
             else{
-                movesText.text = "Will be replaced";
+                // Online level, get MoveCount from PlayerPrefs
+                string url = "https://row-match.s3.amazonaws.com/levels/RM_A" + (i - 10);
+                string jsonLevelData = PlayerPrefs.GetString(url);
+                MainMenu.LevelData levelData = JsonUtility.FromJson<MainMenu.LevelData>(jsonLevelData);
+                movesText.text = "Moves: " + levelData.MoveCount;
             }
 
             Button button = levelButton.GetComponent<Button>();

@@ -124,9 +124,6 @@ public class MainMenu : MonoBehaviour
                 string jsonLevelData = JsonUtility.ToJson(levelData);
                 PlayerPrefs.SetString(url, jsonLevelData);
 
-                // levelDataDict[url] = levelData;
-
-
             }
         }
     }
