@@ -58,7 +58,6 @@ public class Grid : MonoBehaviour
     void Start()
     {
 
-        
         xDimension = PlayerPrefs.GetInt("GridWidth", 8);
         yDimension = PlayerPrefs.GetInt("GridHeight", 8);
         MoveCounter.isGameOver = false;
