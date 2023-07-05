@@ -22,11 +22,26 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    public LevelData[] offlineLevels = new LevelData[10];
+
     // public Dictionary<string, LevelData> levelDataDict;
 
     public  string[] urls = {
         "https://row-match.s3.amazonaws.com/levels/RM_A1",
-        "https://row-match.s3.amazonaws.com/levels/RM_A2"
+        "https://row-match.s3.amazonaws.com/levels/RM_A2",
+        "https://row-match.s3.amazonaws.com/levels/RM_A3",
+        "https://row-match.s3.amazonaws.com/levels/RM_A4",
+        "https://row-match.s3.amazonaws.com/levels/RM_A5",
+        "https://row-match.s3.amazonaws.com/levels/RM_A6",
+        "https://row-match.s3.amazonaws.com/levels/RM_A7",
+        "https://row-match.s3.amazonaws.com/levels/RM_A8",
+        "https://row-match.s3.amazonaws.com/levels/RM_A9",
+        "https://row-match.s3.amazonaws.com/levels/RM_A10",
+        "https://row-match.s3.amazonaws.com/levels/RM_A11",
+        "https://row-match.s3.amazonaws.com/levels/RM_A12",
+        "https://row-match.s3.amazonaws.com/levels/RM_A13",
+        "https://row-match.s3.amazonaws.com/levels/RM_A14",
+        "https://row-match.s3.amazonaws.com/levels/RM_A15",
     };
 
     private void Start()
@@ -34,8 +49,23 @@ public class MainMenu : MonoBehaviour
         // DontDestroyOnLoad(gameObject); // keep the levelDataDict
         // levelDataDict = new Dictionary<string, LevelData>(); 
 
+        for (int i = 0; i < offlineLevels.Length; i++)
+        {
+            // This is an example, replace these values with your own level data
+            offlineLevels[i] = new LevelData
+            {
+                GridWidth = UnityEngine.Random.Range(4, 9),   
+                GridHeight = UnityEngine.Random.Range(4, 11),
+                MoveCount = UnityEngine.Random.Range(8, 17)
+            };
+        }
+
         GetComponent<Button>().onClick.AddListener(OpenLevelsPopup);
-        downloadButton.onClick.AddListener(DownloadAndLogContent);
+        downloadButton.onClick.AddListener(() =>
+        {
+            PlayerPrefs.SetInt("hasDownloaded", 1); // flag for level creation
+            DownloadContent();
+        });
     }
 
     private void OpenLevelsPopup()
@@ -43,15 +73,15 @@ public class MainMenu : MonoBehaviour
         LevelsPopup.SetActive(true);
     }
 
-    private void DownloadAndLogContent()
+    private void DownloadContent()
     {
         foreach (var url in urls)
         {
-            StartCoroutine(DownloadAndLog(url));
+            StartCoroutine(DownloadLevels(url));
         }
     }
 
-    private IEnumerator DownloadAndLog(string url)
+    private IEnumerator DownloadLevels(string url)
     {
         using (UnityWebRequest www = UnityWebRequest.Get(url))
         {

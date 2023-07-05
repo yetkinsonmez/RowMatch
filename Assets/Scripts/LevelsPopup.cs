@@ -11,7 +11,6 @@ public class LevelsPopup : MonoBehaviour
     public GameObject LevelButtonPrefab;
     public Transform LevelsContainer;
     private int levelCount;
-    public int[] initialLevelMoveCounts;
     public Button cancelButton; 
 
     public MainMenu mainMenu;
@@ -24,8 +23,14 @@ public class LevelsPopup : MonoBehaviour
 
     private void OnEnable()
     {
-
-        levelCount = mainMenu.urls.Length;
+        if (PlayerPrefs.GetInt("hasDownloaded", 0) == 1)
+        {
+            levelCount = mainMenu.urls.Length + mainMenu.offlineLevels.Length;
+        }
+        else
+        {
+            levelCount = mainMenu.offlineLevels.Length;
+        }
         
         // populate the levels
         PopulateLevels();
@@ -33,21 +38,11 @@ public class LevelsPopup : MonoBehaviour
         // slide-in animation for the panel
         transform.localPosition = new Vector3(0, -Screen.height, 0);
         transform.DOLocalMoveY(-20, 1.2f).SetEase(Ease.OutCubic);
-
-        // sequential appearance for the level buttons
-        foreach (Transform child in LevelsContainer)
-        {
-            child.localScale = Vector3.zero; // make each button invisible
-            Sequence mySequence = DOTween.Sequence();
-            mySequence.AppendInterval(0.1f * child.GetSiblingIndex()); // delay based on button order
-            mySequence.Append(child.DOScale(1f, 0.7f)); // make each button appear gradually
-            mySequence.Play();
-        }
     }
 
 
     private void PopulateLevels()
-    {
+    {   
         // Clean up before populating
         foreach (Transform child in LevelsContainer)
         {
@@ -55,11 +50,12 @@ public class LevelsPopup : MonoBehaviour
         }
 
         // get the highest level reached
-        int levelReached = PlayerPrefs.GetInt("levelReached", 1);
+        // int levelReached = PlayerPrefs.GetInt("levelReached", 1);
 
         // Create button for each level
         for (int i = 1; i <= levelCount; i++)
-        {
+        {   
+
             GameObject levelButton = Instantiate(LevelButtonPrefab, LevelsContainer);
             
             // levelButton.transform.localScale = new Vector3(0.8f, 0.7f, 1f);
@@ -73,16 +69,21 @@ public class LevelsPopup : MonoBehaviour
             Text statsText = levelButton.transform.Find("LevelDetail").GetComponent<Text>();
 
             levelText.text = "Level " + i;
-
-            int initialLevelMoveCount = initialLevelMoveCounts[i-1];
-            statsText.text = "Highest Score: " + stats[0] + " | Moves: " + initialLevelMoveCount;
-
+            
+            if (i <= mainMenu.offlineLevels.Length)
+            {
+                // This is an offline level
+                statsText.text = "Offline Level - Moves: " + mainMenu.offlineLevels[i - 1].MoveCount;
+            }
+            else{
+                statsText.text = "Will be replaced";
+            }
 
             // disable the button if the level is not reached yet
             Button button = levelButton.GetComponent<Button>();
-            if(i > levelReached) {
-                button.interactable = false;
-            }
+            // if(i > levelReached) {
+            //     button.interactable = false;
+            // }
 
             int levelIndex = i; // Important to capture in local variable for delegate
             button.onClick.AddListener(() => LoadLevel(levelIndex));
@@ -91,10 +92,20 @@ public class LevelsPopup : MonoBehaviour
 
     private void LoadLevel(int levelIndex)
     {
-        string url = "https://row-match.s3.amazonaws.com/levels/RM_A" + levelIndex;
-        string jsonLevelData = PlayerPrefs.GetString(url);
-        MainMenu.LevelData levelData = JsonUtility.FromJson<MainMenu.LevelData>(jsonLevelData);
+        MainMenu.LevelData levelData;
 
+        if (levelIndex <= mainMenu.offlineLevels.Length)
+        {
+            // This is an offline level
+            levelData = mainMenu.offlineLevels[levelIndex - 1];
+        }
+        else
+        {
+            string url = "https://row-match.s3.amazonaws.com/levels/RM_A" + levelIndex;
+            string jsonLevelData = PlayerPrefs.GetString(url);
+            levelData = JsonUtility.FromJson<MainMenu.LevelData>(jsonLevelData);
+
+        }
         PlayerPrefs.SetInt("GridWidth", levelData.GridWidth);
         PlayerPrefs.SetInt("GridHeight", levelData.GridHeight);
         PlayerPrefs.SetInt("MoveCount", levelData.MoveCount);

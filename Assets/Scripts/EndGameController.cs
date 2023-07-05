@@ -14,7 +14,6 @@ public class EndGameController : MonoBehaviour
     public ParticleSystem fireworkParticles;
 
     private ScoreManager scoreManager;
-    private int currentLevel = 1; // set this based on your current level
 
     private void Awake()
     {
