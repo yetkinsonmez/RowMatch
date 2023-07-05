@@ -30,13 +30,23 @@ public class EndGameController : MonoBehaviour
        
         int score = scoreManager.GetScore();
         
-
+        currentLevel = PlayerPrefs.GetInt("CurrentLevel");
+        Debug.Log(currentLevel);
+        
         if (score >= 1000)
         {   
+
+            int highScore = PlayerPrefs.GetInt("Level" + currentLevel + "HighScore", 0);
+            Debug.Log("Score: " + score.ToString());
+            Debug.Log("Highest Score: " + highScore.ToString());
+            if (score > highScore)
+            {
+                PlayerPrefs.SetInt("Level" + currentLevel + "HighScore", score);
+            }
+
             totalScoreText.text = "Score: " + score;
 
-            currentLevel = PlayerPrefs.GetInt("CurrentLevel");
-            Debug.Log(currentLevel);
+            
             currentLevel++;
             int highestLevel = PlayerPrefs.GetInt("highestLevel", 1);
             if (currentLevel > highestLevel)

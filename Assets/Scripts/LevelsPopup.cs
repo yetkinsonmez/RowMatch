@@ -60,17 +60,31 @@ public class LevelsPopup : MonoBehaviour
             GameObject levelButton = Instantiate(LevelButtonPrefab, LevelsContainer);
 
             Text levelText = levelButton.transform.Find("LevelNo").GetComponent<Text>();
-            Text statsText = levelButton.transform.Find("LevelDetail").GetComponent<Text>();
-
+            Text movesText = levelButton.transform.Find("Moves").GetComponent<Text>();
+            Text highestScoreText = levelButton.transform.Find("HighestScore").GetComponent<Text>();
+            
+            
             levelText.text = "Level " + i;
+
+            int highScore = PlayerPrefs.GetInt("Level" + i + "HighScore", 0);
+            Debug.Log("Main: " + highScore.ToString());
+            // if the score exists, display it, otherwise display "No Score"
+            if(highScore > 0)
+            {
+                highestScoreText.text = "Highest Score: " + highScore;
+            }
+            else
+            {
+                highestScoreText.text = "No Score";
+            }
             
             if (i <= mainMenu.offlineLevels.Length)
             {
                 // This is an offline level
-                statsText.text = "Offline Level - Moves: " + mainMenu.offlineLevels[i - 1].MoveCount;
+                movesText.text = "Moves: " + mainMenu.offlineLevels[i - 1].MoveCount;
             }
             else{
-                statsText.text = "Will be replaced";
+                movesText.text = "Will be replaced";
             }
 
             Button button = levelButton.GetComponent<Button>();
