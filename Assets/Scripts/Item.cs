@@ -8,6 +8,8 @@ public class Item : MonoBehaviour
     private int x;
     private int y;
 
+    public bool isAnimated = false; // flag for matched row animation
+
     public int X{
         get { return x; }
         set {
@@ -42,6 +44,7 @@ public class Item : MonoBehaviour
     
     public void Init(int _x, int _y, Grid _grid, Grid.PieceType _type){
         x = _x; y = _y; grid = _grid; type = _type;
+        isAnimated = false;
     }
 
     void OnMouseEnter(){

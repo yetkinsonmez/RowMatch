@@ -174,6 +174,9 @@ public class Grid : MonoBehaviour
     {
         for (int x = 0; x < xDimension; x++)
         {   
+
+            if (pieces[x, row].isAnimated) continue;
+
             // get color of the matched row
             ColoredItem.ColorType colorType = pieces[x, row].ColorComponent.Color;
             
@@ -187,7 +190,9 @@ public class Grid : MonoBehaviour
             pieces[x, row].Init(x, row, this, PieceType.CHECK_MARK);
             pieces[x, row].ColorComponent.SetColor(ColoredItem.ColorType.CheckMark); // set color to CheckMark
 
-            newPiece.transform.DOScale(1.2f, 0.5f).SetLoops(2, LoopType.Yoyo);
+            newPiece.transform.DOScale(1.2f, 0.6f).SetLoops(2, LoopType.Yoyo);
+
+            pieces[x, row].isAnimated = true;
 
             scoreManager.AddScore(colorType);
 
