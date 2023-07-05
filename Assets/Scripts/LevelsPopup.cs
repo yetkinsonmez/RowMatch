@@ -10,10 +10,11 @@ public class LevelsPopup : MonoBehaviour
 {
     public GameObject LevelButtonPrefab;
     public Transform LevelsContainer;
-    private int levelCount = 3; //update this according to your total levels
+    private int levelCount;
     public int[] initialLevelMoveCounts;
     public Button cancelButton; 
 
+    public MainMenu mainMenu;
 
 
     private void Awake()
@@ -23,6 +24,9 @@ public class LevelsPopup : MonoBehaviour
 
     private void OnEnable()
     {
+
+        levelCount = mainMenu.urls.Length;
+        
         // populate the levels
         PopulateLevels();
 
@@ -87,8 +91,10 @@ public class LevelsPopup : MonoBehaviour
 
     private void LoadLevel(int levelIndex)
     {
-        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
-        MainMenu.LevelData levelData = mainMenu.levelDataDict["https://row-match.s3.amazonaws.com/levels/RM_A" + levelIndex];
+        string url = "https://row-match.s3.amazonaws.com/levels/RM_A" + levelIndex;
+        string jsonLevelData = PlayerPrefs.GetString(url);
+        MainMenu.LevelData levelData = JsonUtility.FromJson<MainMenu.LevelData>(jsonLevelData);
+
         PlayerPrefs.SetInt("GridWidth", levelData.GridWidth);
         PlayerPrefs.SetInt("GridHeight", levelData.GridHeight);
         PlayerPrefs.SetInt("MoveCount", levelData.MoveCount);

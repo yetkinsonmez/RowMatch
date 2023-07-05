@@ -22,16 +22,17 @@ public class MainMenu : MonoBehaviour
         }
     }
 
-    public Dictionary<string, LevelData> levelDataDict;
+    // public Dictionary<string, LevelData> levelDataDict;
 
-    private string[] urls = {
+    public  string[] urls = {
         "https://row-match.s3.amazonaws.com/levels/RM_A1",
         "https://row-match.s3.amazonaws.com/levels/RM_A2"
     };
 
     private void Start()
-    {
-        levelDataDict = new Dictionary<string, LevelData>(); 
+    {   
+        // DontDestroyOnLoad(gameObject); // keep the levelDataDict
+        // levelDataDict = new Dictionary<string, LevelData>(); 
 
         GetComponent<Button>().onClick.AddListener(OpenLevelsPopup);
         downloadButton.onClick.AddListener(DownloadAndLogContent);
@@ -73,8 +74,10 @@ public class MainMenu : MonoBehaviour
 
                 Debug.Log(levelData.print());
 
-                // Add the level data to the dictionary, using the URL as the key
-                levelDataDict[url] = levelData;
+                string jsonLevelData = JsonUtility.ToJson(levelData);
+                PlayerPrefs.SetString(url, jsonLevelData);
+
+                // levelDataDict[url] = levelData;
 
 
             }
