@@ -50,20 +50,14 @@ public class LevelsPopup : MonoBehaviour
         }
 
         // get the highest level reached
-        // int levelReached = PlayerPrefs.GetInt("levelReached", 1);
+        int levelReached = PlayerPrefs.GetInt("highestLevel", 1);
+
 
         // Create button for each level
         for (int i = 1; i <= levelCount; i++)
         {   
 
             GameObject levelButton = Instantiate(LevelButtonPrefab, LevelsContainer);
-            
-            // levelButton.transform.localScale = new Vector3(0.8f, 0.7f, 1f);
-
-            // Here we fetch and display highest score and move count
-            string levelStats = PlayerPrefs.GetString("LevelStats" + i, "0,0"); // Format is "HighestScore,MoveCount"
-            
-            string[] stats = levelStats.Split(',');
 
             Text levelText = levelButton.transform.Find("LevelNo").GetComponent<Text>();
             Text statsText = levelButton.transform.Find("LevelDetail").GetComponent<Text>();
@@ -79,11 +73,12 @@ public class LevelsPopup : MonoBehaviour
                 statsText.text = "Will be replaced";
             }
 
-            // disable the button if the level is not reached yet
             Button button = levelButton.GetComponent<Button>();
-            // if(i > levelReached) {
-            //     button.interactable = false;
-            // }
+
+            // disable the button if the level is not reached yet
+            if(i > levelReached) {
+                button.interactable = false;
+            }
 
             int levelIndex = i; // Important to capture in local variable for delegate
             button.onClick.AddListener(() => LoadLevel(levelIndex));
@@ -109,6 +104,8 @@ public class LevelsPopup : MonoBehaviour
         PlayerPrefs.SetInt("GridWidth", levelData.GridWidth);
         PlayerPrefs.SetInt("GridHeight", levelData.GridHeight);
         PlayerPrefs.SetInt("MoveCount", levelData.MoveCount);
+
+        PlayerPrefs.SetInt("CurrentLevel", levelIndex);
         SceneManager.LoadScene("Game");
     }
 

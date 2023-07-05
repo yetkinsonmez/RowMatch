@@ -12,6 +12,7 @@ public class EndGameController : MonoBehaviour
     public Button homeButton;
     public Button nextLevelButton;
     public ParticleSystem fireworkParticles;
+    private int currentLevel;
 
     private ScoreManager scoreManager;
 
@@ -26,19 +27,38 @@ public class EndGameController : MonoBehaviour
 
     private void OnEnable()
     {
-        // populate score text with the final score
-        totalScoreText.text = "Score: " + scoreManager.GetScore();
-        fireworkParticles.Play();
-
-        Sequence mySequence = DOTween.Sequence();
-
-        mySequence.Append(transform.DOScale(1.3f, 0.6f)); 
-        mySequence.Append(transform.DOScale(0.6f, 0.5f));
-        mySequence.Append(transform.DOScale(1.2f, 0.4f)); 
-        mySequence.Append(transform.DOScale(0.8f, 0.3f)); 
-        mySequence.Append(transform.DOScale(1, 0.3f));
+       
+        int score = scoreManager.GetScore();
         
-        mySequence.Play();         
+
+        if (score >= 1000)
+        {   
+            totalScoreText.text = "Score: " + score;
+
+            currentLevel = PlayerPrefs.GetInt("CurrentLevel");
+            Debug.Log(currentLevel);
+            currentLevel++;
+            int highestLevel = PlayerPrefs.GetInt("highestLevel", 1);
+            if (currentLevel > highestLevel)
+            {
+                PlayerPrefs.SetInt("highestLevel", currentLevel);
+            }
+        
+            fireworkParticles.Play();
+
+            Sequence mySequence = DOTween.Sequence();
+
+            mySequence.Append(transform.DOScale(1.3f, 0.6f)); 
+            mySequence.Append(transform.DOScale(0.6f, 0.5f));
+            mySequence.Append(transform.DOScale(1.2f, 0.4f)); 
+            mySequence.Append(transform.DOScale(0.8f, 0.3f)); 
+            mySequence.Append(transform.DOScale(1, 0.3f));
+            
+            mySequence.Play();   
+        }
+        else{
+            totalScoreText.text = "You failed";
+        }      
     }
 
     // private void RestartGame()
