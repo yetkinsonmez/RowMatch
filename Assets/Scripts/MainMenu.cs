@@ -46,27 +46,44 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {   
-        // DontDestroyOnLoad(gameObject); // keep the levelDataDict
-        // levelDataDict = new Dictionary<string, LevelData>(); 
-
-        for (int i = 0; i < offlineLevels.Length; i++)
-        {
-            // This is an example, replace these values with your own level data
-            offlineLevels[i] = new LevelData
-            {
-                GridWidth = UnityEngine.Random.Range(4, 9),   
-                GridHeight = UnityEngine.Random.Range(4, 11),
-                MoveCount = UnityEngine.Random.Range(8, 17)
-            };
-        }
-
         GetComponent<Button>().onClick.AddListener(OpenLevelsPopup);
         downloadButton.onClick.AddListener(() =>
         {
             PlayerPrefs.SetInt("hasDownloaded", 1); // flag for level creation
             DownloadContent();
         });
+
+        if (!PlayerPrefs.HasKey("offlineLevelsGenerated"))
+        {
+            // Generate the offline levels
+            for (int i = 0; i < offlineLevels.Length; i++)
+            {
+                // This is an example, replace these values with your own level data
+                offlineLevels[i] = new LevelData
+                {
+                    GridWidth = UnityEngine.Random.Range(4, 9),   
+                    GridHeight = UnityEngine.Random.Range(4, 11),
+                    MoveCount = UnityEngine.Random.Range(8, 17)
+                };
+                
+                // Convert to JSON and save to PlayerPrefs
+                string jsonLevelData = JsonUtility.ToJson(offlineLevels[i]);
+                PlayerPrefs.SetString("OfflineLevel" + i, jsonLevelData);
+            }
+
+            PlayerPrefs.SetInt("offlineLevelsGenerated", 1);
+        }
+        else
+        {
+            // Load the offline levels
+            for (int i = 0; i < offlineLevels.Length; i++)
+            {
+                string jsonLevelData = PlayerPrefs.GetString("OfflineLevel" + i);
+                offlineLevels[i] = JsonUtility.FromJson<LevelData>(jsonLevelData);
+            }
+        }
     }
+
 
     private void OpenLevelsPopup()
     {

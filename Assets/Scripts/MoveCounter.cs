@@ -48,7 +48,7 @@ public class MoveCounter : MonoBehaviour
         isGameOver = true;
 
 
-        StartCoroutine(ShowStageCompletedDisplayAfterDelay(0.5f));        
+        StartCoroutine(ShowStageCompletedDisplayAfterDelay(0.75f));        
     }
 
     private IEnumerator ShowStageCompletedDisplayAfterDelay(float delay)
