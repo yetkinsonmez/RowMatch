@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -45,6 +46,16 @@ public class ScoreManager : MonoBehaviour
     private void UpdateScoreDisplay()
     {
         scoreDisplay.text = "Score\n" + currentScore;
+
+        scoreDisplay.transform.DOScale(0.45f, 0.1f).OnComplete(() => 
+        {
+            scoreDisplay.transform.DOScale(0.3f, 0.1f);
+        });
+
+        scoreDisplay.DOColor(Color.yellow, 0.1f).OnComplete(() => 
+        {
+            scoreDisplay.DOColor(Color.white, 0.1f);
+        });
     }
 
     public int GetScore()
