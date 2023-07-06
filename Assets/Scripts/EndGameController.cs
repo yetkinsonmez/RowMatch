@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using DG.Tweening;
 
 public class EndGameController : MonoBehaviour
-{
+{   
     public Text totalScoreText;
     public Button playAgainButton;
     public Button homeButton;
@@ -15,6 +15,12 @@ public class EndGameController : MonoBehaviour
     private int currentLevel;
 
     private ScoreManager scoreManager;
+    public Grid grid;
+
+    public AudioSource audioSource;
+    public AudioClip victorySound;
+    public AudioClip loseSound;
+    public AudioClip clickSound;
 
     private void Awake()
     {
@@ -27,7 +33,7 @@ public class EndGameController : MonoBehaviour
 
     private void OnEnable()
     {
-       
+        grid.musicAudioSource.Stop();
         int score = scoreManager.GetScore();
         
         currentLevel = PlayerPrefs.GetInt("CurrentLevel");
@@ -35,7 +41,7 @@ public class EndGameController : MonoBehaviour
         
         if (score >= 1000)
         {   
-
+            audioSource.PlayOneShot(victorySound);
             int highScore = PlayerPrefs.GetInt("Level" + currentLevel + "HighScore", 0);
             Debug.Log("Score: " + score.ToString());
             Debug.Log("Highest Score: " + highScore.ToString());
@@ -67,6 +73,7 @@ public class EndGameController : MonoBehaviour
             mySequence.Play();   
         }
         else{
+            audioSource.PlayOneShot(loseSound);
             totalScoreText.text = "You failed";
         }      
     }
@@ -94,6 +101,7 @@ public class EndGameController : MonoBehaviour
 
     private void GoToMainMenu()
     {
+        audioSource.PlayOneShot(clickSound);
         SceneManager.LoadScene("MainMenu");
     }
 }

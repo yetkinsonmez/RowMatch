@@ -49,33 +49,7 @@ public class MoveCounter : MonoBehaviour
     {
         isGameOver = true;
 
-        StartCoroutine(CountdownMoveCounter());
-
         StartCoroutine(ShowStageCompletedDisplayAfterDelay(0.75f));        
-    }
-
-    private IEnumerator CountdownMoveCounter()
-    {
-        while (moveCount > 0)
-        {
-            moveCount--;
-
-            moveCountDisplay.transform.DOScale(0.45f, 0.1f).OnComplete(() => 
-            {
-                moveCountDisplay.transform.DOScale(0.3f, 0.1f);
-            });
-
-            moveCountDisplay.DOColor(Color.red, 0.1f).OnComplete(() => 
-            {
-                moveCountDisplay.DOColor(Color.white, 0.1f);
-            });
-            if(moveCount <= 0){
-                moveCount = 0;
-            }
-            UpdateMoveCountDisplay();
-
-            yield return new WaitForSeconds(0.2f); // Wait for the animation to complete
-        }
     }
 
 

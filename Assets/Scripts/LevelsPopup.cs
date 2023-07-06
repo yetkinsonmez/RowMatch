@@ -15,6 +15,10 @@ public class LevelsPopup : MonoBehaviour
 
     public MainMenu mainMenu;
 
+    public AudioSource audioSource;
+    public AudioClip levelStartSound;
+
+
 
     private void Awake()
     {
@@ -99,12 +103,13 @@ public class LevelsPopup : MonoBehaviour
             }
 
             int levelIndex = i; // Important to capture in local variable for delegate
-            button.onClick.AddListener(() => LoadLevel(levelIndex));
+            button.onClick.AddListener(() => StartCoroutine(LoadLevel(levelIndex)));
         }
     }
 
-    private void LoadLevel(int levelIndex)
+    private IEnumerator LoadLevel(int levelIndex)
     {
+        mainMenu.musicAudioSource.Stop();
         MainMenu.LevelData levelData;
 
         if (levelIndex <= mainMenu.offlineLevels.Length)
@@ -117,15 +122,22 @@ public class LevelsPopup : MonoBehaviour
             string url = "https://row-match.s3.amazonaws.com/levels/RM_A" + levelIndex;
             string jsonLevelData = PlayerPrefs.GetString(url);
             levelData = JsonUtility.FromJson<MainMenu.LevelData>(jsonLevelData);
-
         }
+        
         PlayerPrefs.SetInt("GridWidth", levelData.GridWidth);
         PlayerPrefs.SetInt("GridHeight", levelData.GridHeight);
         PlayerPrefs.SetInt("MoveCount", levelData.MoveCount);
 
         PlayerPrefs.SetInt("CurrentLevel", levelIndex);
-        SceneManager.LoadScene("Game");
+        audioSource.PlayOneShot(levelStartSound);
+
+        // Wait for 1 second to let the level start sound play
+        yield return new WaitForSeconds(1.5f);
+
+        
+        SceneManager.LoadScene("LoadingScreen");
     }
+
 
 
     private void Cancel() // add this Cancel function

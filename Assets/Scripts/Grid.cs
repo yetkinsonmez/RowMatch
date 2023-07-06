@@ -43,6 +43,16 @@ public class Grid : MonoBehaviour
 
     public Button cancelButton; 
 
+    public AudioSource audioSource;
+    public AudioClip swapSound;
+    public AudioClip matchedRowSound;
+    public AudioClip clickSound;
+
+    public AudioSource musicAudioSource;
+    public AudioClip backgroundMusic;
+
+
+
     private void Awake()
     {
         cancelButton.onClick.AddListener(GoToMainMenu);
@@ -57,6 +67,9 @@ public class Grid : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        musicAudioSource.clip = backgroundMusic;
+        musicAudioSource.loop = true;
+        musicAudioSource.Play();
 
         xDimension = PlayerPrefs.GetInt("GridWidth", 8);
         yDimension = PlayerPrefs.GetInt("GridHeight", 8);
@@ -124,6 +137,8 @@ public class Grid : MonoBehaviour
             itemFirst.MovableComponent.Move(itemSecond.X, itemSecond.Y);
             itemSecond.MovableComponent.Move(itemFirstX, itemFirstY);
 
+            audioSource.PlayOneShot(swapSound);
+
             CheckCompleteRows();
             moveCounter.DecreaseMoveCount();
         }
@@ -145,69 +160,17 @@ public class Grid : MonoBehaviour
 
     public void CheckCompleteRows()
     {
-        List<int> matchedRowsIndices = new List<int>(); // List to store indices of matched rows
-
         for (int y = 0; y < yDimension; y++)
         {
             if (RowIsComplete(y))
-            {
+            {   
+                
                 StartCoroutine(UpdateRow(y));
-                matchedRowsIndices.Add(y); 
             }
         }
 
-        if (!CheckPossibleMatches(matchedRowsIndices))
-        {
-            moveCounter.StageCompleted();
-        }
     }
 
-    private bool CheckPossibleMatches(List<int> matchedRowsIndices)
-    {
-        matchedRowsIndices.Insert(0, 0); // top row
-        matchedRowsIndices.Add(yDimension); // bottom row
-
-        for (int i = 0; i < matchedRowsIndices.Count - 1; i++)
-        {
-            int startY = matchedRowsIndices[i];
-            int endY = matchedRowsIndices[i + 1];
-
-            if (!HasPossibleMatchesInSubgrid(startY, endY))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private bool HasPossibleMatchesInSubgrid(int startY, int endY)
-    {
-        int[] colorCounts = new int[4]; // Count for each color (blue, green, red, yellow)
-
-        for (int y = startY; y < endY; y++)
-        {
-            for (int x = 0; x < xDimension; x++)
-            {
-                ColoredItem.ColorType color = pieces[x, y].ColorComponent.Color;
-                if (color != ColoredItem.ColorType.CheckMark) // Skip counting CheckMark color
-                {
-                    colorCounts[(int)color]++;
-                }
-            }
-        }
-
-        // Check if there's a color with count equal to or greater than xDimension
-        for (int i = 0; i < colorCounts.Length; i++)
-        {
-            if (colorCounts[i] >= xDimension)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     private bool RowIsComplete(int row)
     {
@@ -226,11 +189,18 @@ public class Grid : MonoBehaviour
 
     private IEnumerator UpdateRow(int row)
     {
+        bool isRowSoundPlayed = false; 
+
         for (int x = 0; x < xDimension; x++)
         {   
 
             if (pieces[x, row].isAnimated) continue;
-
+            
+            if (!isRowSoundPlayed) {
+                audioSource.PlayOneShot(matchedRowSound);
+                isRowSoundPlayed = true;
+            }
+            
             // get color of the matched row
             ColoredItem.ColorType colorType = pieces[x, row].ColorComponent.Color;
             
@@ -257,6 +227,7 @@ public class Grid : MonoBehaviour
 
     public void GoToMainMenu()
     {
+        audioSource.PlayOneShot(clickSound);
         SceneManager.LoadScene("MainMenu");
     }
 

@@ -24,6 +24,13 @@ public class MainMenu : MonoBehaviour
 
     public LevelData[] offlineLevels = new LevelData[10];
 
+    public AudioSource audioSource;
+    public AudioClip clickSound;
+
+    public AudioSource musicAudioSource;
+    public AudioClip backgroundMusic;
+
+
     // public Dictionary<string, LevelData> levelDataDict;
 
     public  string[] urls = {
@@ -46,9 +53,14 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {   
+        musicAudioSource.clip = backgroundMusic;
+        musicAudioSource.loop = true;
+        musicAudioSource.Play();
+
         GetComponent<Button>().onClick.AddListener(OpenLevelsPopup);
         downloadButton.onClick.AddListener(() =>
         {
+            audioSource.PlayOneShot(clickSound);
             PlayerPrefs.SetInt("hasDownloaded", 1); // flag for level creation
             DownloadContent();
         });
@@ -61,9 +73,9 @@ public class MainMenu : MonoBehaviour
                 // This is an example, replace these values with your own level data
                 offlineLevels[i] = new LevelData
                 {
-                    GridWidth = UnityEngine.Random.Range(4, 8),   
-                    GridHeight = UnityEngine.Random.Range(4, 7),
-                    MoveCount = UnityEngine.Random.Range(9, 17)
+                    GridWidth = UnityEngine.Random.Range(3, 8),   
+                    GridHeight = UnityEngine.Random.Range(4, 9),
+                    MoveCount = UnityEngine.Random.Range(10, 20)
                 };
                 
                 // Convert to JSON and save to PlayerPrefs
@@ -87,6 +99,7 @@ public class MainMenu : MonoBehaviour
 
     private void OpenLevelsPopup()
     {
+        audioSource.PlayOneShot(clickSound);
         LevelsPopup.SetActive(true);
     }
 
