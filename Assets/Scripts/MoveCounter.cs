@@ -32,7 +32,7 @@ public class MoveCounter : MonoBehaviour
         moveCount--;
         UpdateMoveCountDisplay();
 
-        //if(moveCount <= 0 || !grid.CheckPossibleMatches(grid.xDimension))
+        //if(moveCount <= 0 || !grid.CheckPossibleMatches())
         if(moveCount <= 0)
         {
             Debug.Log("xDimension (MoveCounter.cs): " + grid.xDimension.ToString());

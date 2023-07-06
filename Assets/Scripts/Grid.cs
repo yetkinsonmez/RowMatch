@@ -17,6 +17,8 @@ public class Grid : MonoBehaviour
     public int xDimension;
     public int yDimension;
 
+    private List<int> rowIndexList; 
+
     public float fillTime;
 
     [System.Serializable]
@@ -52,6 +54,53 @@ public class Grid : MonoBehaviour
     public AudioClip backgroundMusic;
 
 
+    // private List<int> UpdateRowIndicesList(int rowIndex)
+    // {
+    //     rowIndexList.Add(rowIndex);
+    //     rowIndexList.Sort();
+    //     return rowIndexList;
+    // }
+
+    public bool CheckPossibleMatches()
+    {
+        Dictionary<ColoredItem.ColorType, int> colorCount = new Dictionary<ColoredItem.ColorType, int>();
+        List<int> matchedRows = new List<int>();
+        matchedRows.Add(-1);  
+        for (int y = 0; y < yDimension; y++)
+        {
+            colorCount.Clear();
+            for (int x = 0; x < xDimension; x++)
+            {
+                // encounterd a CHECK_MARK
+                if (pieces[x, y].Type == PieceType.CHECK_MARK) 
+                {
+                    matchedRows.Add(y);
+
+                    if (colorCount.Values.Any(count => count >= xDimension))
+                    {
+                        return true;
+                    }
+
+                    colorCount.Clear();
+                    y += 2;
+                    break;
+                }
+
+                ColoredItem.ColorType color = pieces[x, y].ColorComponent.Color;
+                if (colorCount.ContainsKey(color))
+                {
+                    colorCount[color]++;
+                }
+                else
+                {
+                    colorCount[color] = 1;
+                }
+            }
+            
+        }
+
+        return false;
+    }
 
     private void Awake()
     {
@@ -75,6 +124,8 @@ public class Grid : MonoBehaviour
         yDimension = PlayerPrefs.GetInt("GridHeight", 8);
         MoveCounter.isGameOver = false;
         
+        rowIndexList = new List<int> { xDimension, yDimension };
+
         piecePrefabDict = new Dictionary<PieceType, GameObject>(); 
 
         for (int i = 0; i < piecePrefabs.Length; i++)
@@ -168,6 +219,10 @@ public class Grid : MonoBehaviour
                 StartCoroutine(UpdateRow(y));
             }
         }
+        // if (!AreTherePossibleMatches(rowIndexList))
+        // {
+        //     moveCounter.StageCompleted();
+        // }
 
     }
 
@@ -187,6 +242,7 @@ public class Grid : MonoBehaviour
         return true;
     }
 
+
     private IEnumerator UpdateRow(int row)
     {
         bool isRowSoundPlayed = false; 
@@ -200,7 +256,7 @@ public class Grid : MonoBehaviour
                 audioSource.PlayOneShot(matchedRowSound);
                 isRowSoundPlayed = true;
             }
-            
+
             // get color of the matched row
             ColoredItem.ColorType colorType = pieces[x, row].ColorComponent.Color;
             
@@ -219,6 +275,15 @@ public class Grid : MonoBehaviour
             pieces[x, row].isAnimated = true;
 
             scoreManager.AddScore(colorType);
+
+            // var updatedRowIndexList = UpdateRowIndicesList(row);
+            // var areTherePossibleMatches = AreTherePossibleMatches(updatedRowIndexList);
+
+            // // If no matches are left, end the game
+            // if (!areTherePossibleMatches)
+            // {
+            //     moveCounter.StageCompleted();
+            // }
 
             yield return new WaitForSeconds(0.0625f);
         }

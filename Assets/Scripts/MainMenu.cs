@@ -49,6 +49,16 @@ public class MainMenu : MonoBehaviour
         "https://row-match.s3.amazonaws.com/levels/RM_A13",
         "https://row-match.s3.amazonaws.com/levels/RM_A14",
         "https://row-match.s3.amazonaws.com/levels/RM_A15",
+        "https://row-match.s3.amazonaws.com/levels/RM_B1",
+        "https://row-match.s3.amazonaws.com/levels/RM_B2",
+        "https://row-match.s3.amazonaws.com/levels/RM_B3",
+        "https://row-match.s3.amazonaws.com/levels/RM_B4",
+        "https://row-match.s3.amazonaws.com/levels/RM_B5",
+        "https://row-match.s3.amazonaws.com/levels/RM_B6",
+        "https://row-match.s3.amazonaws.com/levels/RM_B7",
+        "https://row-match.s3.amazonaws.com/levels/RM_B8",
+        "https://row-match.s3.amazonaws.com/levels/RM_B9",
+        "https://row-match.s3.amazonaws.com/levels/RM_B10",
     };
 
     private void Start()

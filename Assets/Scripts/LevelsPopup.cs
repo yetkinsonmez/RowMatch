@@ -53,11 +53,10 @@ public class LevelsPopup : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        // get the highest level reached
         int levelReached = PlayerPrefs.GetInt("highestLevel", 1);
 
 
-        // Create button for each level
+        // level buttons
         for (int i = 1; i <= levelCount; i++)
         {   
 
@@ -72,7 +71,7 @@ public class LevelsPopup : MonoBehaviour
 
             int highScore = PlayerPrefs.GetInt("Level" + i + "HighScore", 0);
             Debug.Log("Main: " + highScore.ToString());
-            // if the score exists, display it, otherwise display "No Score"
+
             if(highScore > 0)
             {
                 highestScoreText.text = "Highest Score: " + highScore;
@@ -84,22 +83,33 @@ public class LevelsPopup : MonoBehaviour
             
             if (i <= mainMenu.offlineLevels.Length)
             {
-                // This is an offline level
                 movesText.text = "Moves: " + mainMenu.offlineLevels[i - 1].MoveCount;
             }
             else{
-                // Online level, get MoveCount from PlayerPrefs
-                string url = "https://row-match.s3.amazonaws.com/levels/RM_A" + (i - 10);
+                string url;
+                int onlineLevelIndex;
+                if (i <= 25){
+                    url = "https://row-match.s3.amazonaws.com/levels/RM_A" + (i - 10);
+                    onlineLevelIndex = i - 10;
+                }
+                else // it is RM_B*
+                {
+                    url = "https://row-match.s3.amazonaws.com/levels/RM_B" + (i - 25);
+                    onlineLevelIndex = i - 25;
+                }
                 string jsonLevelData = PlayerPrefs.GetString(url);
                 MainMenu.LevelData levelData = JsonUtility.FromJson<MainMenu.LevelData>(jsonLevelData);
                 movesText.text = "Moves: " + levelData.MoveCount;
             }
 
             Button button = levelButton.GetComponent<Button>();
+            Image lockIcon = levelButton.transform.Find("Lock").GetComponent<Image>();
 
-            // disable the button if the level is not reached yet
+
+            // locked ones
             if(i > levelReached) {
                 button.interactable = false;
+                lockIcon.gameObject.SetActive(true);
             }
 
             int levelIndex = i; // Important to capture in local variable for delegate
@@ -114,16 +124,21 @@ public class LevelsPopup : MonoBehaviour
 
         if (levelIndex <= mainMenu.offlineLevels.Length)
         {
-            // This is an offline level
             levelData = mainMenu.offlineLevels[levelIndex - 1];
         }
-        else
+         else if (levelIndex <= 10 + 15) // if it is RM_A*
         {
-            string url = "https://row-match.s3.amazonaws.com/levels/RM_A" + levelIndex;
+            string url = "https://row-match.s3.amazonaws.com/levels/RM_A" + (levelIndex - 10);
             string jsonLevelData = PlayerPrefs.GetString(url);
             levelData = JsonUtility.FromJson<MainMenu.LevelData>(jsonLevelData);
         }
-        
+        else // it is RM_B*
+        {
+            string url = "https://row-match.s3.amazonaws.com/levels/RM_B" + (levelIndex - 10 - 15);
+            string jsonLevelData = PlayerPrefs.GetString(url);
+            levelData = JsonUtility.FromJson<MainMenu.LevelData>(jsonLevelData);
+        }
+            
         PlayerPrefs.SetInt("GridWidth", levelData.GridWidth);
         PlayerPrefs.SetInt("GridHeight", levelData.GridHeight);
         PlayerPrefs.SetInt("MoveCount", levelData.MoveCount);
@@ -131,16 +146,14 @@ public class LevelsPopup : MonoBehaviour
         PlayerPrefs.SetInt("CurrentLevel", levelIndex);
         audioSource.PlayOneShot(levelStartSound);
 
-        // Wait for 1 second to let the level start sound play
         yield return new WaitForSeconds(1.5f);
 
-        
         SceneManager.LoadScene("LoadingScreen");
     }
 
 
 
-    private void Cancel() // add this Cancel function
+    private void Cancel()
     {
         transform.DOLocalMoveY(-Screen.height, 0.5f).SetEase(Ease.InCubic).OnComplete(() => gameObject.SetActive(false));
     }

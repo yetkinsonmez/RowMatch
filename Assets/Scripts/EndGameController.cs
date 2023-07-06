@@ -26,7 +26,7 @@ public class EndGameController : MonoBehaviour
     {
         scoreManager = GameObject.FindObjectOfType<ScoreManager>();
 
-        // playAgainButton.onClick.AddListener(() => RestartGame());
+        playAgainButton.onClick.AddListener(() => RestartGame());
         homeButton.onClick.AddListener(() => GoToMainMenu());
         // nextLevelButton.onClick.AddListener(() => GoToNextLevel());
     }
@@ -52,12 +52,10 @@ public class EndGameController : MonoBehaviour
 
             totalScoreText.text = "Score: " + score;
 
-            
-            currentLevel++;
             int highestLevel = PlayerPrefs.GetInt("highestLevel", 1);
-            if (currentLevel > highestLevel)
+            if (currentLevel + 1 > highestLevel)
             {
-                PlayerPrefs.SetInt("highestLevel", currentLevel);
+                PlayerPrefs.SetInt("highestLevel", currentLevel + 1);
             }
         
             fireworkParticles.Play();
@@ -78,26 +76,20 @@ public class EndGameController : MonoBehaviour
         }      
     }
 
-    // private void RestartGame()
-    // {
-    //     if (scoreManager.GetScore() > highScore)
-    //     {
-    //         PlayerPrefs.SetInt("Level" + currentLevel + "HighScore", scoreManager.GetScore());
-    //     }
-
-    //     SceneManager.LoadScene("Level" + currentLevel);
-    // }
+    private void RestartGame()
+    {
+        audioSource.PlayOneShot(clickSound);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 
     // private void GoToNextLevel()
     // {
-    //     if (scoreManager.GetScore() > highScore)
-    //     {
-    //         PlayerPrefs.SetInt("Level" + currentLevel + "HighScore", scoreManager.GetScore());
-    //     }
-
+    //     audioSource.PlayOneShot(clickSound);
     //     currentLevel++;
-    //     SceneManager.LoadScene("Level" + currentLevel);
+    //     PlayerPrefs.SetInt("CurrentLevel", currentLevel);
+    //     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     // }
+
 
     private void GoToMainMenu()
     {
