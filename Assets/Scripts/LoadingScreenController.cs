@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class LoadingScreenController : MonoBehaviour
 {
-    public string gameSceneName = "Game"; // The name of your game scene
-    public float delay = 3f; // The delay before loading the game scene
+    public string gameSceneName = "Game"; 
+    public float delay = 3f; 
 
     public AudioSource audioSource;
     public AudioClip infoSound;

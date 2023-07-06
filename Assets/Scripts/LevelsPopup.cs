@@ -39,7 +39,6 @@ public class LevelsPopup : MonoBehaviour
         // populate the levels
         PopulateLevels();
 
-        // slide-in animation for the panel
         transform.localPosition = new Vector3(0, -Screen.height, 0);
         transform.DOLocalMoveY(-20, 1.2f).SetEase(Ease.OutCubic);
     }
@@ -47,7 +46,7 @@ public class LevelsPopup : MonoBehaviour
 
     private void PopulateLevels()
     {   
-        // Clean up before populating
+        // in case of new leves are added
         foreach (Transform child in LevelsContainer)
         {
             Destroy(child.gameObject);
@@ -112,7 +111,7 @@ public class LevelsPopup : MonoBehaviour
                 lockIcon.gameObject.SetActive(true);
             }
 
-            int levelIndex = i; // Important to capture in local variable for delegate
+            int levelIndex = i;
             button.onClick.AddListener(() => StartCoroutine(LoadLevel(levelIndex)));
         }
     }

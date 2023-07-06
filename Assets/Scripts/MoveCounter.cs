@@ -55,7 +55,7 @@ public class MoveCounter : MonoBehaviour
 
     private IEnumerator ShowStageCompletedDisplayAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(delay); // Wait for the specified delay
+        yield return new WaitForSeconds(delay); 
 
         stageCompletedDisplay.SetActive(true);
     }

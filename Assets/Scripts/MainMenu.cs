@@ -77,10 +77,8 @@ public class MainMenu : MonoBehaviour
 
         if (!PlayerPrefs.HasKey("offlineLevelsGenerated"))
         {
-            // Generate the offline levels
             for (int i = 0; i < offlineLevels.Length; i++)
             {
-                // This is an example, replace these values with your own level data
                 offlineLevels[i] = new LevelData
                 {
                     GridWidth = UnityEngine.Random.Range(3, 8),   
@@ -88,7 +86,7 @@ public class MainMenu : MonoBehaviour
                     MoveCount = UnityEngine.Random.Range(10, 20)
                 };
                 
-                // Convert to JSON and save to PlayerPrefs
+                // keep level in JSON format
                 string jsonLevelData = JsonUtility.ToJson(offlineLevels[i]);
                 PlayerPrefs.SetString("OfflineLevel" + i, jsonLevelData);
             }
@@ -97,7 +95,6 @@ public class MainMenu : MonoBehaviour
         }
         else
         {
-            // Load the offline levels
             for (int i = 0; i < offlineLevels.Length; i++)
             {
                 string jsonLevelData = PlayerPrefs.GetString("OfflineLevel" + i);

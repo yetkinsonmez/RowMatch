@@ -61,46 +61,46 @@ public class Grid : MonoBehaviour
     //     return rowIndexList;
     // }
 
-    public bool CheckPossibleMatches()
-    {
-        Dictionary<ColoredItem.ColorType, int> colorCount = new Dictionary<ColoredItem.ColorType, int>();
-        List<int> matchedRows = new List<int>();
-        matchedRows.Add(-1);  
-        for (int y = 0; y < yDimension; y++)
-        {
-            colorCount.Clear();
-            for (int x = 0; x < xDimension; x++)
-            {
-                // encounterd a CHECK_MARK
-                if (pieces[x, y].Type == PieceType.CHECK_MARK) 
-                {
-                    matchedRows.Add(y);
+    // public bool CheckPossibleMatches()
+    // {
+    //     Dictionary<ColoredItem.ColorType, int> colorCount = new Dictionary<ColoredItem.ColorType, int>();
+    //     List<int> matchedRows = new List<int>();
+    //     matchedRows.Add(-1);  
+    //     for (int y = 0; y < yDimension; y++)
+    //     {
+    //         colorCount.Clear();
+    //         for (int x = 0; x < xDimension; x++)
+    //         {
+    //             // encounterd a CHECK_MARK
+    //             if (pieces[x, y].Type == PieceType.CHECK_MARK) 
+    //             {
+    //                 matchedRows.Add(y);
 
-                    if (colorCount.Values.Any(count => count >= xDimension))
-                    {
-                        return true;
-                    }
+    //                 if (colorCount.Values.Any(count => count >= xDimension))
+    //                 {
+    //                     return true;
+    //                 }
 
-                    colorCount.Clear();
-                    y += 2;
-                    break;
-                }
+    //                 colorCount.Clear();
+    //                 y += 2;
+    //                 break;
+    //             }
 
-                ColoredItem.ColorType color = pieces[x, y].ColorComponent.Color;
-                if (colorCount.ContainsKey(color))
-                {
-                    colorCount[color]++;
-                }
-                else
-                {
-                    colorCount[color] = 1;
-                }
-            }
+    //             ColoredItem.ColorType color = pieces[x, y].ColorComponent.Color;
+    //             if (colorCount.ContainsKey(color))
+    //             {
+    //                 colorCount[color]++;
+    //             }
+    //             else
+    //             {
+    //                 colorCount[color] = 1;
+    //             }
+    //         }
             
-        }
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
     private void Awake()
     {
