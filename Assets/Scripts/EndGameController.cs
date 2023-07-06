@@ -73,7 +73,6 @@ public class EndGameController : MonoBehaviour
 
     // private void RestartGame()
     // {
-    //     int highScore = PlayerPrefs.GetInt("Level" + currentLevel + "HighScore", 0);
     //     if (scoreManager.GetScore() > highScore)
     //     {
     //         PlayerPrefs.SetInt("Level" + currentLevel + "HighScore", scoreManager.GetScore());
@@ -82,10 +81,8 @@ public class EndGameController : MonoBehaviour
     //     SceneManager.LoadScene("Level" + currentLevel);
     // }
 
-    // // Update the GoToNextLevel() method
     // private void GoToNextLevel()
     // {
-    //     int highScore = PlayerPrefs.GetInt("Level" + currentLevel + "HighScore", 0);
     //     if (scoreManager.GetScore() > highScore)
     //     {
     //         PlayerPrefs.SetInt("Level" + currentLevel + "HighScore", scoreManager.GetScore());

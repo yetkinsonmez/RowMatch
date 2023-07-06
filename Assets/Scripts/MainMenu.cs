@@ -61,8 +61,8 @@ public class MainMenu : MonoBehaviour
                 // This is an example, replace these values with your own level data
                 offlineLevels[i] = new LevelData
                 {
-                    GridWidth = UnityEngine.Random.Range(4, 7),   
-                    GridHeight = UnityEngine.Random.Range(4, 10),
+                    GridWidth = UnityEngine.Random.Range(4, 8),   
+                    GridHeight = UnityEngine.Random.Range(4, 7),
                     MoveCount = UnityEngine.Random.Range(9, 17)
                 };
                 
